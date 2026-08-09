@@ -3,122 +3,226 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rintu's Notebook</title>
+<title>Rinto</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   html, body { height: 100%; margin: 0; padding: 0; }
   :root {
-    --page-bg: #050505;
-    --dyn-bg: #0d0e0f;
-    --dyn-bg-raised: #17181b;
-    --dyn-border: #232427;
-    --dyn-text: #f2f1ec;
-    --dyn-text-secondary: #a3a29c;
-    --dyn-text-muted: #67665f;
-    --dyn-accent: #6fa8dc;
-    --dyn-accent-dim: #223349;
-    --dyn-hover: rgba(255,255,255,0.045);
-    --dyn-amber: #d9a55b;
-    --dyn-red: #d9695b;
-    --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --page-bg: #181822;
+    --dyn-bg: #181822;
+    --dyn-bg-raised: #222230;
+    --dyn-border: #2e2e40;
+    --dyn-text: #ececf1;
+    --dyn-text-secondary: #9e9eb2;
+    --dyn-text-muted: #64647a;
+    --dyn-accent: #7ca1f8;
+    --dyn-accent-dim: #2a3654;
+    --dyn-hover: rgba(255,255,255,0.06);
+    --dyn-amber: #e5b367;
+    --dyn-red: #e57373;
+    --dyn-green: #81c784;
+    --note-border: #3b3b52;
   }
   html[data-theme="light"] {
-    --page-bg: #eeede8;
-    --dyn-bg: #ffffff;
-    --dyn-bg-raised: #f3f2ee;
-    --dyn-border: #e2e1da;
-    --dyn-text: #201f1c;
-    --dyn-text-secondary: #6f6e68;
-    --dyn-text-muted: #a3a29b;
-    --dyn-accent: #2f6fb0;
-    --dyn-accent-dim: #d7e6f4;
-    --dyn-hover: rgba(0,0,0,0.035);
-    --dyn-amber: #a06a1e;
-    --dyn-red: #b8473a;
+    --page-bg: #f8f8fa;
+    --dyn-bg: #f8f8fa;
+    --dyn-bg-raised: #ebebf0;
+    --dyn-border: #dcdce5;
+    --dyn-text: #1a1a24;
+    --dyn-text-secondary: #656578;
+    --dyn-text-muted: #9595a8;
+    --dyn-accent: #3b66d4;
+    --dyn-accent-dim: #dbe4fa;
+    --dyn-hover: rgba(0,0,0,0.04);
+    --dyn-amber: #b87a1d;
+    --dyn-red: #c94444;
+    --dyn-green: #388e3c;
+    --note-border: #cccccc;
   }
   * { box-sizing: border-box; }
-  html, body { background: var(--page-bg); }
-  #app-shell { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: var(--dyn-text); height: 100vh; width: 100vw; display: flex; flex-direction: column; background: var(--page-bg); transition: background-color 200ms ease, color 200ms ease; }
-  #app-root { display: flex; flex-direction: column; height: 100%; max-width: 920px; width: 100%; margin: 0 auto; padding: 20px 26px 22px; }
+  html, body { 
+    background: var(--page-bg); 
+    color: var(--dyn-text);
+    font-family: 'Google Sans', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased; 
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  #app-shell { height: 100vh; width: 100vw; display: flex; flex-direction: column; background: var(--page-bg); transition: background-color 200ms ease; }
+  #app-root { display: flex; flex-direction: column; height: 100%; max-width: 900px; width: 100%; margin: 0 auto; padding: 24px 32px; }
 
-  /* header */
-  #top-bar { display: flex; align-items: center; gap: 14px; flex-shrink: 0; margin-bottom: 18px; }
-  #app-title { font-size: 17px; font-weight: 700; white-space: nowrap; flex-shrink: 0; }
-  #search-input { width: 34px; height: 30px; font-family: inherit; font-size: 13px; padding: 0 10px; border-radius: 7px; border: 0.5px solid var(--dyn-border); background: var(--dyn-bg-raised); color: var(--dyn-text); outline: none; transition: width 180ms ease, border-color 150ms ease; flex-shrink: 0; }
-  #search-input.expanded { width: 180px; }
-  #search-input:focus { border-color: var(--dyn-accent-dim); width: 180px; }
-  #search-input::placeholder { color: var(--dyn-text-muted); }
-  #nav-group { display: flex; align-items: center; gap: 14px; margin-left: auto; }
-  .nav-btn { display: flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 12px; color: var(--dyn-text-secondary); background: transparent; border: none; padding: 5px 4px; cursor: pointer; transition: color 150ms ease; }
-  .nav-btn:hover { color: var(--dyn-text); }
-  .nav-btn svg { width: 15px; height: 15px; }
-  .nav-divider { width: 1px; height: 18px; background: var(--dyn-border); }
-  #filters { display: flex; gap: 2px; align-items: center; font-family: var(--font-mono); background: var(--dyn-bg-raised); border-radius: 8px; padding: 3px; border: 0.5px solid var(--dyn-border); }
-  .filter-btn { font-family: inherit; font-size: 12px; padding: 4px 10px; border-radius: 6px; border: none; background: transparent; color: var(--dyn-text-muted); cursor: pointer; transition: background-color 150ms ease, color 150ms ease; }
+  /* Header Bar with Delayed Fade-Out */
+  #top-bar { 
+    display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-shrink: 0; margin-bottom: 20px; 
+    max-height: 50px; overflow: visible; opacity: 1;
+    transition: max-height 400ms cubic-bezier(0.2, 0, 0, 1), margin 400ms cubic-bezier(0.2, 0, 0, 1), opacity 400ms ease;
+  }
+  
+  /* Delayed Zen mode body class */
+  body.typing-mode #top-bar {
+    max-height: 0;
+    margin-bottom: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  #top-left-group { display: flex; align-items: center; gap: 10px; }
+  #app-title { font-size: 20px; font-weight: 700; letter-spacing: -0.01em; white-space: nowrap; cursor: pointer; }
+  
+  #nav-group { display: flex; align-items: center; gap: 12px; margin-left: auto; }
+  
+  .filter-btn, #search-input, button, input, textarea { font-family: inherit; }
+
+  .icon-btn { width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border-radius: 8px; background: transparent; border: none; color: var(--dyn-text-secondary); cursor: pointer; transition: color 150ms ease, background-color 150ms ease; }
+  .icon-btn:hover { color: var(--dyn-text); background: var(--dyn-hover); }
+  .icon-btn svg { width: 18px; height: 18px; }
+
+  /* Combined Filter Capsule */
+  #filters { display: flex; gap: 2px; align-items: center; background: var(--dyn-bg-raised); border-radius: 8px; padding: 3px; border: 0.5px solid var(--dyn-border); }
+  .filter-btn { font-size: 12.5px; font-weight: 500; padding: 4px 10px; border-radius: 6px; border: none; background: transparent; color: var(--dyn-text-muted); cursor: pointer; transition: background-color 150ms ease, color 150ms ease; display: flex; align-items: center; justify-content: center; }
   .filter-btn:hover { color: var(--dyn-text-secondary); }
   .filter-btn.active { background: var(--dyn-accent-dim); color: var(--dyn-accent); }
-  .icon-btn { width: 30px; height: 30px; padding: 0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border-radius: 7px; background: transparent; border: none; color: var(--dyn-text-secondary); cursor: pointer; transition: color 150ms ease, background-color 150ms ease; }
-  .icon-btn:hover { color: var(--dyn-text); background: var(--dyn-hover); }
-  .icon-btn svg { width: 16px; height: 16px; }
+  .filter-btn.icon-filter { padding: 4px 6px; }
+  .filter-btn.icon-filter svg { width: 15px; height: 15px; }
 
-  /* card */
-  #card { flex: 1; display: flex; flex-direction: column; min-height: 0; background: var(--dyn-bg); border: 0.5px solid var(--dyn-border); border-radius: 16px; padding: 24px 30px; transition: background-color 200ms ease, border-color 200ms ease; }
-  #breadcrumb { font-family: var(--font-mono); font-size: 11.5px; color: var(--dyn-text-muted); min-height: 16px; display: flex; align-items: center; gap: 4px; margin-bottom: 14px; flex-shrink: 0; }
-  .crumb { cursor: pointer; padding: 2px 4px; border-radius: 4px; transition: color 120ms ease, background-color 120ms ease; }
+  /* Search Container (Appears BEFORE date filter) */
+  #search-box { position: relative; display: flex; align-items: center; }
+  #search-box .search-icon { position: absolute; left: 9px; width: 14px; height: 14px; color: var(--dyn-text-muted); pointer-events: none; }
+  #search-input { width: 130px; height: 32px; font-size: 13px; padding: 0 10px 0 28px; border-radius: 8px; border: 0.5px solid var(--dyn-border); background: var(--dyn-bg-raised); color: var(--dyn-text); outline: none; transition: width 180ms ease, border-color 150ms ease; }
+  #search-input:focus { border-color: var(--dyn-accent); width: 180px; }
+  #search-input::placeholder { color: var(--dyn-text-muted); }
+
+  /* Redesigned Menu UX */
+  .menu-container { position: relative; }
+  .dropdown-menu { 
+    position: absolute; right: 0; top: 40px; width: 230px; background: var(--dyn-bg-raised); border: 0.5px solid var(--dyn-border); 
+    border-radius: 12px; padding: 8px; box-shadow: 0 12px 32px rgba(0,0,0,0.45); display: none; flex-direction: column; gap: 4px; z-index: 200; 
+  }
+  .dropdown-menu.show { display: flex; }
+  .menu-section-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--dyn-text-muted); padding: 6px 8px 2px 8px; }
+  .menu-divider { height: 1px; background: var(--dyn-border); margin: 4px 0; }
+  
+  .dropdown-item { 
+    display: flex; align-items: center; justify-content: space-between; font-size: 13px; font-weight: 500; color: var(--dyn-text-secondary); 
+    padding: 8px 10px; border-radius: 8px; border: none; background: transparent; cursor: pointer; width: 100%; text-align: left; transition: background-color 120ms ease, color 120ms ease;
+  }
+  .dropdown-item:hover { color: var(--dyn-text); background: var(--dyn-hover); }
+  .dropdown-item-left { display: flex; align-items: center; gap: 10px; }
+  .dropdown-item svg { width: 16px; height: 16px; color: var(--dyn-text-secondary); }
+  .dropdown-item:hover svg { color: var(--dyn-text); }
+  
+  /* Menu Toggle Switch */
+  .switch { position: relative; display: inline-block; width: 32px; height: 18px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--dyn-border); transition: .2s; border-radius: 18px; }
+  .slider:before { position: absolute; content: ""; height: 12px; width: 12px; left: 3px; bottom: 3px; background-color: white; transition: .2s; border-radius: 50%; }
+  input:checked + .slider { background-color: var(--dyn-accent); }
+  input:checked + .slider:before { transform: translateX(14px); }
+
+  /* Main Canvas Area */
+  #card { flex: 1; display: flex; flex-direction: column; min-height: 0; background: transparent; border: none; padding: 0; }
+  
+  /* Breadcrumbs Always Visible for Context */
+  #breadcrumb { 
+    font-size: 13px; color: var(--dyn-text-muted); min-height: 20px; display: flex; align-items: center; gap: 4px; margin-bottom: 12px; flex-shrink: 0; flex-wrap: wrap;
+  }
+  .crumb { cursor: pointer; padding: 2px 6px; border-radius: 4px; transition: color 120ms ease, background-color 120ms ease; }
   .crumb:hover { color: var(--dyn-accent); background: var(--dyn-hover); }
-  .crumb-sep { color: var(--dyn-text-muted); }
-  #outline-list { flex: 1; overflow-y: auto; padding-right: 4px; }
-  #outline-list::-webkit-scrollbar { width: 8px; }
-  #outline-list::-webkit-scrollbar-thumb { background: var(--dyn-border); border-radius: 4px; }
+  .crumb-sep { color: var(--dyn-text-muted); opacity: 0.6; }
+  
+  /* Zoomed Heading Display */
+  #zoomed-heading { display: none; margin-bottom: 16px; flex-shrink: 0; }
+  #zoomed-heading.active { display: block; }
+  #zoomed-heading .zoom-title { font-size: 26px; font-weight: 700; color: var(--dyn-text); border: none; background: transparent; outline: none; width: 100%; line-height: 1.3; }
+
+  #outline-list { flex: 1; overflow-y: auto; padding-right: 8px; }
+  #outline-list::-webkit-scrollbar { width: 6px; }
+  #outline-list::-webkit-scrollbar-thumb { background: var(--dyn-border); border-radius: 3px; }
   #outline-list::-webkit-scrollbar-track { background: transparent; }
-  #toolbar { display: flex; align-items: center; margin-top: 6px; flex-shrink: 0; min-height: 14px; }
+  
+  #toolbar { display: flex; align-items: center; margin-top: 8px; flex-shrink: 0; min-height: 14px; }
   #save-status { font-size: 11px; color: var(--dyn-text-muted); margin-left: auto; transition: opacity 300ms ease; }
 
-  /* rows */
+  /* Tree Nodes & Precise Alignment */
   .node-wrapper { position: relative; }
-  .row { position: relative; display: flex; align-items: flex-start; padding: 3px 6px; border-radius: 6px; opacity: 1; transform: translateY(0); transition: opacity 200ms ease, transform 200ms ease; }
-  .row.entering { opacity: 0; transform: translateY(-6px); }
+  .node-wrapper.is-hidden { display: none !important; }
+  .row { position: relative; display: flex; align-items: flex-start; padding: 2px 0; border-radius: 6px; }
 
-  .caret { width: 18px; height: 26px; flex-shrink: 0; cursor: pointer; user-select: none; font-size: 10px; color: var(--dyn-text-muted); display: flex; align-items: center; justify-content: center; transform: rotate(0deg); transition: transform 180ms ease, color 150ms ease; }
+  .caret { width: 16px; height: 26px; flex-shrink: 0; cursor: pointer; user-select: none; font-size: 10px; color: var(--dyn-text-muted); display: flex; align-items: center; justify-content: center; transform: rotate(0deg); transition: transform 150ms ease, color 150ms ease; }
   .caret.collapsed { transform: rotate(-90deg); }
-  .caret.leaf { cursor: default; font-size: 8px; opacity: 0.55; }
-  .caret:not(.leaf):hover { color: var(--dyn-text-secondary); }
-  .row.title-row .caret { height: 34px; }
+  .caret.leaf { opacity: 0; pointer-events: none; }
+  .caret:not(.leaf):hover { color: var(--dyn-text); }
 
-  .content { flex: 1; outline: none; font-size: 14px; line-height: 1.65; padding: 2px 4px; min-height: 20px; white-space: pre-wrap; word-break: break-word; color: var(--dyn-text); caret-color: var(--dyn-accent); }
-  .row.title-row .content { font-size: 23px; font-weight: 700; line-height: 1.4; letter-spacing: -0.01em; }
-  .tag-hash, .tag-at { padding: 1px 5px; border-radius: 5px; background: var(--dyn-bg-raised); border: 0.5px solid var(--dyn-border); }
-  .tag-hash { color: var(--dyn-accent); }
-  .tag-at { color: var(--dyn-amber); }
+  .bullet-dot { width: 18px; height: 26px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  .bullet-dot::after { content: ''; width: 6px; height: 6px; border-radius: 50%; background-color: var(--dyn-text-muted); transition: background-color 150ms ease, transform 150ms ease; }
+  .row:hover .bullet-dot::after { background-color: var(--dyn-accent); transform: scale(1.3); }
 
-  .zoom-btn { width: 22px; height: 23px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--dyn-text-muted); opacity: 0; pointer-events: none; transition: opacity 150ms ease, color 150ms ease; border-radius: 5px; }
-  .row:hover .zoom-btn { opacity: 1; pointer-events: auto; }
-  .zoom-btn:hover { color: var(--dyn-accent); background: var(--dyn-hover); }
-  .zoom-btn svg { width: 13px; height: 13px; }
+  .content { flex: 1; outline: none; font-size: 15px; line-height: 1.6; padding: 1px 6px; min-height: 24px; white-space: pre-wrap; word-break: break-word; color: var(--dyn-text); caret-color: var(--dyn-accent); font-weight: 400; transition: text-decoration 150ms ease, opacity 150ms ease; }
+  
+  /* Bold Nodes with Children */
+  .row.has-children > .content { font-weight: 600; }
+  
+  /* Strikethrough / Completion style (Ctrl+Enter) */
+  .node-wrapper.completed > .row > .content { text-decoration: line-through; opacity: 0.45; }
+  .node-wrapper.completed > .children-wrap { text-decoration: line-through; opacity: 0.45; }
+  
+  /* Tags & Project Highlighting */
+  .tag-hash, .tag-at, .tag-repeat { 
+    display: inline-flex; align-items: center; vertical-align: middle; height: 20px;
+    padding: 0 6px; margin: 0 2px; border-radius: 4px; font-size: 13px; font-weight: 500; line-height: 1; 
+  }
+  .tag-hash { color: var(--dyn-accent); background: var(--dyn-accent-dim); }
+  .tag-at { color: var(--dyn-amber); background: rgba(229, 179, 103, 0.18); }
+  .tag-repeat { color: var(--dyn-green); background: rgba(129, 199, 132, 0.18); }
 
-  .date-badge { font-size: 11px; padding: 1px 7px; border-radius: 10px; margin-left: 8px; margin-top: 2px; cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: filter 120ms ease; }
+  /* Date Badge */
+  .date-badge { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 10px; margin-left: 8px; margin-top: 3px; cursor: pointer; white-space: nowrap; flex-shrink: 0; display: inline-flex; align-items: center; gap: 4px; transition: filter 120ms ease; }
   .date-badge:hover { filter: brightness(1.2); }
   .date-badge.d-future { background: var(--dyn-bg-raised); color: var(--dyn-text-secondary); border: 0.5px solid var(--dyn-border); }
-  .date-badge.d-today { background: rgba(111,168,220,0.16); color: var(--dyn-accent); border: 0.5px solid var(--dyn-accent-dim); }
-  .date-badge.d-overdue { background: rgba(217,105,91,0.16); color: var(--dyn-red); border: 0.5px solid var(--dyn-red); }
+  .date-badge.d-today { background: var(--dyn-accent-dim); color: var(--dyn-accent); }
+  .date-badge.d-overdue { background: rgba(229,115,115,0.18); color: var(--dyn-red); }
 
-  .note-field { display: block; width: calc(100% - 40px); margin-left: 36px; margin-top: -2px; margin-bottom: 4px; font-size: 12.5px; line-height: 1.5; color: var(--dyn-text-secondary); background: transparent; border: none; border-left: 2px solid var(--dyn-border); padding: 2px 0 2px 10px; resize: none; overflow: hidden; font-family: inherit; outline: none; }
-  .note-field:focus { border-left-color: var(--dyn-accent-dim); color: var(--dyn-text); }
+  /* Note Field: Perfectly Aligned with Node Text */
+  .note-field { 
+    display: block; 
+    width: calc(100% - 34px); 
+    font-size: 13px; 
+    line-height: 1.5; 
+    color: var(--dyn-text-secondary); 
+    background: transparent; 
+    border: none; 
+    border-left: 2px solid var(--note-border); 
+    padding: 2px 0 2px 10px; 
+    margin-top: 2px;
+    margin-bottom: 6px;
+    resize: none; 
+    overflow: hidden; 
+    outline: none; 
+    transition: border-color 150ms ease;
+  }
+  .note-field:focus { color: var(--dyn-text); border-left-color: var(--dyn-accent); }
 
-  .date-popover { position: absolute; z-index: 20; top: 100%; left: 36px; margin-top: 2px; background: var(--dyn-bg-raised); border: 0.5px solid var(--dyn-border); border-radius: 8px; padding: 8px; display: flex; flex-direction: column; gap: 6px; box-shadow: 0 6px 18px rgba(0,0,0,0.35); }
-  .date-popover button { font-family: inherit; text-align: left; font-size: 12px; padding: 4px 8px; border: 0.5px solid var(--dyn-border); border-radius: 6px; background: var(--dyn-bg); color: var(--dyn-text-secondary); cursor: pointer; }
-  .date-popover button:hover { color: var(--dyn-text); }
-  .date-popover input[type="date"] { font-size: 12px; padding: 4px 6px; border-radius: 6px; border: 0.5px solid var(--dyn-border); background: var(--dyn-bg); color: var(--dyn-text); }
+  /* Dynamic Floating Date Picker (Fixed positioning prevents cutoff) */
+  #global-date-popover { 
+    position: fixed; z-index: 1000; 
+    background: var(--dyn-bg-raised); border: 0.5px solid var(--dyn-border); border-radius: 12px; padding: 10px; 
+    display: flex; flex-direction: column; gap: 8px; box-shadow: 0 12px 32px rgba(0,0,0,0.5); width: 220px;
+  }
+  .pop-header { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--dyn-text-muted); }
+  .pop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+  #global-date-popover button { text-align: center; font-size: 12px; font-weight: 500; padding: 6px 8px; border: 0.5px solid var(--dyn-border); border-radius: 6px; background: var(--dyn-bg); color: var(--dyn-text-secondary); cursor: pointer; transition: background-color 120ms ease; }
+  #global-date-popover button:hover { color: var(--dyn-text); background: var(--dyn-hover); }
+  #global-date-popover input[type="date"] { width: 100%; font-size: 12.5px; padding: 6px; border-radius: 6px; border: 0.5px solid var(--dyn-border); background: var(--dyn-bg); color: var(--dyn-text); outline: none; }
+  .repeat-select { font-size: 12px; padding: 5px 8px; border-radius: 6px; border: 0.5px solid var(--dyn-border); background: var(--dyn-bg); color: var(--dyn-text); outline: none; width: 100%; }
 
-  .children-wrap { display: grid; grid-template-rows: 1fr; opacity: 1; transition: grid-template-rows 220ms ease, opacity 220ms ease; }
+  .children-wrap { display: grid; grid-template-rows: 1fr; opacity: 1; transition: grid-template-rows 200ms ease, opacity 200ms ease; }
   .children-wrap.collapsed { grid-template-rows: 0fr; opacity: 0; }
   .children-inner { overflow: hidden; min-height: 0; }
 
-  .filtered-path { font-family: var(--font-mono); font-size: 11px; color: var(--dyn-text-muted); margin-left: 36px; margin-top: -2px; margin-bottom: 4px; }
-
-  .empty-state { font-size: 13px; color: var(--dyn-text-muted); padding: 10px 4px; font-style: italic; }
+  .filtered-path { font-size: 11px; color: var(--dyn-text-muted); margin-top: 2px; margin-bottom: 4px; }
+  .empty-state { font-size: 14px; color: var(--dyn-text-muted); padding: 12px 0; font-style: italic; }
   .click-add { min-height: 32px; cursor: text; }
   .empty-state.click-add { flex: 1; min-height: 200px; }
 </style>
@@ -127,25 +231,94 @@
 
 <div id="app-shell">
   <div id="app-root">
+    <!-- Header -->
     <div id="top-bar">
-      <div id="app-title">Rintu's Notebook</div>
-      <input id="search-input" type="text" placeholder="">
+      <div id="top-left-group">
+        <button class="icon-btn" id="btn-home" title="Home" aria-label="Home">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+        </button>
+        <div id="app-title">Rinto</div>
+      </div>
+      
       <div id="nav-group">
-        <button class="nav-btn" id="btn-home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>home</button>
-        <button class="icon-btn" id="btn-calendar" title="Today" aria-label="Today"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></button>
+        <!-- Search Field (Placed BEFORE filter options) -->
+        <div id="search-box">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input id="search-input" type="text" placeholder="Search...">
+        </div>
+
+        <!-- Filter Capsule -->
         <div id="filters">
+          <button class="filter-btn icon-filter" id="btn-calendar" title="Toggle Today Filter" aria-label="Today Filter">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+          </button>
           <button class="filter-btn active" data-filter="all">all</button>
           <button class="filter-btn" data-filter="today">today</button>
           <button class="filter-btn" data-filter="overdue">overdue</button>
         </div>
-        <div class="nav-divider"></div>
-        <button id="btn-export" class="icon-btn" title="Export" aria-label="Export"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 21h16"/></svg></button>
-        <button id="theme-toggle" class="icon-btn" title="Toggle theme" aria-label="Toggle theme"></button>
+
+        <!-- Redesigned Vertical Dot Menu -->
+        <div class="menu-container">
+          <button class="icon-btn" id="btn-menu" title="Menu" aria-label="Menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+          </button>
+          <div class="dropdown-menu" id="dropdown-menu">
+            <div class="menu-section-label">Preferences</div>
+            <div class="dropdown-item" id="menu-theme-row">
+              <div class="dropdown-item-left">
+                <svg id="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                <span>Dark Mode</span>
+              </div>
+              <label class="switch"><input type="checkbox" id="toggle-theme"><span class="slider"></span></label>
+            </div>
+            <div class="dropdown-item" id="menu-hide-completed-row">
+              <div class="dropdown-item-left">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                <span>Hide Completed</span>
+              </div>
+              <label class="switch"><input type="checkbox" id="toggle-hide-completed"><span class="slider"></span></label>
+            </div>
+
+            <div class="menu-divider"></div>
+            <div class="menu-section-label">Actions</div>
+            <button class="dropdown-item" id="menu-clear-completed">
+              <div class="dropdown-item-left">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                <span>Clear Completed</span>
+              </div>
+            </button>
+
+            <div class="menu-divider"></div>
+            <div class="menu-section-label">Data</div>
+            <button class="dropdown-item" id="menu-import">
+              <div class="dropdown-item-left">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <span>Import Markdown</span>
+              </div>
+            </button>
+            <button class="dropdown-item" id="menu-export">
+              <div class="dropdown-item-left">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span>Export Markdown</span>
+              </div>
+            </button>
+          </div>
+        </div>
+        <input type="file" id="import-file-input" accept=".md,.txt" style="display: none;">
       </div>
     </div>
+
     <div id="card">
+      <!-- Breadcrumbs Always Visible to Maintain Context -->
       <div id="breadcrumb"></div>
+
+      <!-- Zoomed Node Main Heading Title -->
+      <div id="zoomed-heading">
+        <input type="text" class="zoom-title" id="zoom-title-input" placeholder="Untitled">
+      </div>
+
       <div id="outline-list"></div>
+      
       <div id="toolbar">
         <span id="save-status"></span>
       </div>
@@ -155,9 +328,61 @@
 
 <script>
 (function () {
-  const STORAGE_KEY = 'outliner-lite-tree-v2';
-  const THEME_KEY = 'outliner-theme-v1';
+  const STORAGE_KEY = 'outliner-lite-tree-v3';
+  const SETTINGS_KEY = 'outliner-settings-v1';
   const hasCloudStorage = (typeof window.storage !== 'undefined' && window.storage !== null && typeof window.storage.get === 'function');
+
+  // Application State
+  let tree = { id: 'root', text: '', note: '', date: null, recurring: null, completed: false, children: [] };
+  let zoomStack = ['root'];
+  let filterMode = 'all';
+  let hideCompleted = false;
+  let saveTimer = null;
+  let idCounter = 1;
+  let pendingFocus = null;
+  let activeId = null;
+  let openPopoverId = null;
+  let searchQuery = '';
+  let zenTimeout = null;
+
+  function newId() { return 'n' + Date.now().toString(36) + (idCounter++); }
+  function escapeHtml(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  
+  function highlightText(text) {
+    const esc = escapeHtml(text || '');
+    return esc.replace(/(^|\s)(#[\w-]+)/g, '$1<span class="tag-hash">$2</span>')
+               .replace(/(^|\s)(@[\w-]+)/g, '$1<span class="tag-at">$2</span>');
+  }
+
+  function findNode(node, id) { if (node.id === id) return node; for (const c of node.children) { const r = findNode(c, id); if (r) return r; } return null; }
+  function findParent(node, id, parent) { if (node.id === id) return parent; for (const c of node.children) { const r = findParent(c, id, node); if (r !== null) return r; } return null; }
+  function pathTo(node, id, acc) { if (node.id === id) return acc; for (const c of node.children) { const r = pathTo(c, id, acc.concat([c.id])); if (r) return r; } return null; }
+  function siblingsAndIndex(id) { const parent = findParent(tree, id, null); if (!parent) return null; return { parent, idx: parent.children.findIndex(c => c.id === id) }; }
+
+  /* 3-Second Delayed Zen Mode Fade */
+  function resetZenTimer() {
+    document.body.classList.remove('typing-mode');
+    clearTimeout(zenTimeout);
+    if (document.activeElement && (document.activeElement.isContentEditable || document.activeElement.tagName === 'TEXTAREA' || document.activeElement.tagName === 'INPUT')) {
+      zenTimeout = setTimeout(() => {
+        document.body.classList.add('typing-mode');
+      }, 3000); // 3 seconds delay before hiding header
+    }
+  }
+
+  document.addEventListener('focusin', resetZenTimer);
+  document.addEventListener('mousemove', resetZenTimer);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      clearTimeout(zenTimeout);
+      document.body.classList.remove('typing-mode');
+      if (document.activeElement) document.activeElement.blur();
+      closePopover();
+      closeMenu();
+    } else {
+      resetZenTimer();
+    }
+  });
 
   async function storageGet(key) {
     if (hasCloudStorage) {
@@ -171,35 +396,6 @@
     localStorage.setItem(key, value);
   }
 
-  let tree = { id: 'root', text: '', note: '', date: null, children: [] };
-  let zoomStack = ['root'];
-  let filterMode = 'all';
-  let saveTimer = null;
-  let idCounter = 1;
-  let pendingNewId = null;
-  let pendingFocus = null;
-  let activeId = null;
-  let openPopoverId = null;
-  let searchQuery = '';
-
-  function newId() { return 'n' + Date.now().toString(36) + (idCounter++); }
-  function escapeHtml(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
-  function highlightText(text) {
-    const esc = escapeHtml(text || '');
-    return esc.replace(/(^|\s)(#[\w-]+)/g, '$1<span class="tag-hash">$2</span>')
-               .replace(/(^|\s)(@[\w-]+)/g, '$1<span class="tag-at">$2</span>');
-  }
-
-  function findNode(node, id) { if (node.id === id) return node; for (const c of node.children) { const r = findNode(c, id); if (r) return r; } return null; }
-  function findParent(node, id, parent) { if (node.id === id) return parent; for (const c of node.children) { const r = findParent(c, id, node); if (r !== null) return r; } return null; }
-  function pathTo(node, id, acc) { if (node.id === id) return acc; for (const c of node.children) { const r = pathTo(c, id, acc.concat([c.id])); if (r) return r; } return null; }
-  function siblingsAndIndex(id) { const parent = findParent(tree, id, null); if (!parent) return null; return { parent, idx: parent.children.findIndex(c => c.id === id) }; }
-  function getVisibleFlat(viewRoot) {
-    const out = [];
-    (function walk(node, depth) { for (const c of node.children) { out.push({ node: c, depth }); if (!c.collapsed && c.children.length) walk(c, depth + 1); } })(viewRoot, 0);
-    return out;
-  }
-
   function todayStr() { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
   function dateClass(dateStr) {
     if (!dateStr) return '';
@@ -208,10 +404,23 @@
     return 'd-future';
   }
   function formatDate(dateStr) {
+    if (!dateStr) return '';
     const [y,m,d] = dateStr.split('-').map(Number);
     const dt = new Date(y, m-1, d);
     if (dateStr === todayStr()) return 'today';
     return dt.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+  }
+
+  /* Date Recurring Math */
+  function calcNextDate(dateStr, recurringType) {
+    if (!dateStr) dateStr = todayStr();
+    const [y, m, d] = dateStr.split('-').map(Number);
+    const dt = new Date(y, m - 1, d);
+    if (recurringType === 'daily') dt.setDate(dt.getDate() + 1);
+    else if (recurringType === 'weekly') dt.setDate(dt.getDate() + 7);
+    else if (recurringType === 'monthly') dt.setMonth(dt.getMonth() + 1);
+    else if (recurringType === 'yearly') dt.setFullYear(dt.getFullYear() + 1);
+    return dt.getFullYear() + '-' + String(dt.getMonth()+1).padStart(2,'0') + '-' + String(dt.getDate()).padStart(2,'0');
   }
 
   function scheduleSave() {
@@ -221,6 +430,7 @@
     saveTimer = setTimeout(async () => {
       try {
         await storageSet(STORAGE_KEY, JSON.stringify(tree));
+        await storageSet(SETTINGS_KEY, JSON.stringify({ hideCompleted }));
         if (statusEl) { statusEl.textContent = hasCloudStorage ? 'saved' : 'saved locally'; setTimeout(() => { statusEl.style.opacity = '0'; }, 900); }
       } catch (e) { if (statusEl) statusEl.textContent = 'save failed'; console.error(e); }
     }, 400);
@@ -230,21 +440,28 @@
     try {
       const raw = await storageGet(STORAGE_KEY);
       if (raw) tree = JSON.parse(raw);
-      else tree = { id: 'root', text: '', note: '', date: null, children: [] };
-    } catch (e) {
-      tree = { id: 'root', text: '', note: '', date: null, children: [] };
-    }
+      const settings = await storageGet(SETTINGS_KEY);
+      if (settings) {
+        const parsed = JSON.parse(settings);
+        hideCompleted = !!parsed.hideCompleted;
+        document.getElementById('toggle-hide-completed').checked = hideCompleted;
+      }
+    } catch (e) { tree = { id: 'root', text: '', note: '', date: null, recurring: null, completed: false, children: [] }; }
     render();
   }
 
   function currentViewRoot() { return findNode(tree, zoomStack[zoomStack.length - 1]) || tree; }
 
-  function renderBreadcrumb() {
+  /* Breadcrumbs & Zoomed Title Handling */
+  function renderBreadcrumbAndHeader() {
     const el = document.getElementById('breadcrumb');
+    const zoomHeader = document.getElementById('zoomed-heading');
+    const zoomInput = document.getElementById('zoom-title-input');
     el.innerHTML = '';
+
     zoomStack.forEach((id, i) => {
       const node = findNode(tree, id);
-      const label = i === 0 ? 'home' : (node.text || '(untitled)').slice(0, 30);
+      const label = i === 0 ? 'Home' : (node.text || '(untitled)').slice(0, 30);
       const span = document.createElement('span');
       span.className = 'crumb';
       span.textContent = label;
@@ -252,35 +469,104 @@
       el.appendChild(span);
       if (i < zoomStack.length - 1) { const sep = document.createElement('span'); sep.className = 'crumb-sep'; sep.textContent = '\u203A'; el.appendChild(sep); }
     });
+
+    const currNode = currentViewRoot();
+    if (zoomStack.length > 1 && currNode) {
+      zoomHeader.classList.add('active');
+      zoomInput.value = currNode.text;
+      zoomInput.oninput = (e) => {
+        currNode.text = e.target.value;
+        renderBreadcrumbAndHeader();
+        scheduleSave();
+      };
+    } else {
+      zoomHeader.classList.remove('active');
+    }
   }
 
-  function closePopover() { const p = document.querySelector('.date-popover'); if (p) p.remove(); openPopoverId = null; }
+  function closePopover() { 
+    const p = document.getElementById('global-date-popover'); 
+    if (p) p.remove(); 
+    openPopoverId = null; 
+  }
 
-  function openDatePopover(node, row) {
+  /* Fixed Viewport Date Picker Popover (No Cutoff!) */
+  function openDatePopover(node, triggerEl) {
     closePopover();
     openPopoverId = node.id;
+    
     const pop = document.createElement('div');
-    pop.className = 'date-popover';
-    const mk = (label, val) => { const b = document.createElement('button'); b.textContent = label; b.onclick = () => { node.date = val; closePopover(); render(); scheduleSave(); }; return b; };
+    pop.id = 'global-date-popover';
+    
+    const rect = triggerEl.getBoundingClientRect();
+    let top = rect.bottom + 6;
+    if (top + 230 > window.innerHeight) top = rect.top - 235; // Dropup if bottom screen space is tight
+    const left = Math.max(16, Math.min(rect.left, window.innerWidth - 240));
+
+    pop.style.top = top + 'px';
+    pop.style.left = left + 'px';
+
+    const setDateVal = (val, recVal) => {
+      node.date = val;
+      if (recVal !== undefined) node.recurring = recVal;
+      closePopover();
+      render();
+      scheduleSave();
+    };
+
+    const hdr = document.createElement('div');
+    hdr.className = 'pop-header';
+    hdr.textContent = 'Set Due Date';
+    pop.appendChild(hdr);
+
+    const grid = document.createElement('div');
+    grid.className = 'pop-grid';
+
     const t = new Date();
     const iso = (d) => d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
     const tomorrow = new Date(t); tomorrow.setDate(t.getDate()+1);
     const nextWeek = new Date(t); nextWeek.setDate(t.getDate()+7);
-    pop.appendChild(mk('today', iso(t)));
-    pop.appendChild(mk('tomorrow', iso(tomorrow)));
-    pop.appendChild(mk('next week', iso(nextWeek)));
+
+    const mkBtn = (label, val) => {
+      const b = document.createElement('button');
+      b.textContent = label;
+      b.onclick = (e) => { e.stopPropagation(); setDateVal(val); };
+      return b;
+    };
+
+    grid.appendChild(mkBtn('Today', iso(t)));
+    grid.appendChild(mkBtn('Tomorrow', iso(tomorrow)));
+    grid.appendChild(mkBtn('Next Week', iso(nextWeek)));
+    grid.appendChild(mkBtn('Clear', null));
+    pop.appendChild(grid);
+
     const input = document.createElement('input');
     input.type = 'date';
     input.value = node.date || '';
-    input.onchange = () => { node.date = input.value || null; closePopover(); render(); scheduleSave(); };
+    input.onchange = (e) => setDateVal(e.target.value || null);
     pop.appendChild(input);
-    if (node.date) pop.appendChild(mk('clear date', null));
-    row.appendChild(pop);
+
+    const recLabel = document.createElement('div');
+    recLabel.className = 'pop-header';
+    recLabel.textContent = 'Repeat / Recurring';
+    pop.appendChild(recLabel);
+
+    const select = document.createElement('select');
+    select.className = 'repeat-select';
+    select.innerHTML = `
+      <option value="">No Repeat</option>
+      <option value="daily" ${node.recurring === 'daily' ? 'selected' : ''}>Daily</option>
+      <option value="weekly" ${node.recurring === 'weekly' ? 'selected' : ''}>Weekly</option>
+      <option value="monthly" ${node.recurring === 'monthly' ? 'selected' : ''}>Monthly</option>
+      <option value="yearly" ${node.recurring === 'yearly' ? 'selected' : ''}>Yearly</option>
+    `;
+    select.onchange = (e) => setDateVal(node.date || todayStr(), e.target.value || null);
+    pop.appendChild(select);
+
+    document.body.appendChild(pop);
   }
 
   function autoResize(ta) { ta.style.height = 'auto'; ta.style.height = ta.scrollHeight + 'px'; }
-
-  const ZOOM_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg>';
 
   function setActive(id) {
     if (activeId && activeId !== id) {
@@ -288,244 +574,6 @@
       if (prevNote && !prevNote.value.trim()) prevNote.style.display = 'none';
     }
     activeId = id;
-    const note = document.querySelector('.note-field[data-id="' + id + '"]');
-    if (note) { note.style.display = 'block'; autoResize(note); }
-  }
-
-  function buildNodeEl(node, depth, isTitle) {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'node-wrapper';
-    wrapper.dataset.id = node.id;
-
-    const row = document.createElement('div');
-    row.className = 'row' + (isTitle ? ' title-row' : '');
-    row.style.marginLeft = (depth * 20) + 'px';
-    if (node.id === pendingNewId) row.classList.add('entering');
-
-    const isLeaf = node.children.length === 0;
-    const caret = document.createElement('div');
-    caret.className = 'caret' + (isLeaf ? ' leaf' : '') + (node.collapsed ? ' collapsed' : '');
-    caret.textContent = isLeaf ? '\u203A' : '\u25BE';
-    if (!isLeaf) caret.onclick = () => toggleCollapse(node.id);
-    row.appendChild(caret);
-
-    const content = document.createElement('div');
-    content.className = 'content';
-    content.contentEditable = 'true';
-    content.dataset.id = node.id;
-    content.innerHTML = highlightText(node.text);
-    content.addEventListener('focus', () => setActive(node.id));
-    content.addEventListener('input', () => onContentInput(content, node, row));
-    content.addEventListener('keydown', (e) => onKeyDown(e, node.id));
-    row.appendChild(content);
-
-    if (node.date) {
-      const badge = document.createElement('div');
-      badge.className = 'date-badge ' + dateClass(node.date);
-      badge.textContent = formatDate(node.date);
-      badge.onclick = (e) => { e.stopPropagation(); if (openPopoverId === node.id) closePopover(); else openDatePopover(node, row); };
-      row.appendChild(badge);
-    }
-
-    const zoomBtn = document.createElement('div');
-    zoomBtn.className = 'zoom-btn';
-    zoomBtn.title = 'zoom in';
-    zoomBtn.innerHTML = ZOOM_ICON;
-    zoomBtn.onclick = () => { zoomStack.push(node.id); render(); };
-    row.appendChild(zoomBtn);
-
-    wrapper.appendChild(row);
-
-    const note = document.createElement('textarea');
-    note.className = 'note-field';
-    note.dataset.id = node.id;
-    note.value = node.note || '';
-    note.rows = 1;
-    const showNote = !!(node.note && node.note.trim()) || node.id === activeId;
-    note.style.display = showNote ? 'block' : 'none';
-    note.addEventListener('focus', () => setActive(node.id));
-    note.addEventListener('input', () => { node.note = note.value; autoResize(note); scheduleSave(); });
-    note.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' || (e.key === 'Enter' && e.shiftKey)) { e.preventDefault(); focusNode(node.id, false); }
-    });
-    note.addEventListener('blur', () => {
-      setTimeout(() => { if (!note.value.trim() && activeId !== node.id) note.style.display = 'none'; }, 0);
-    });
-    wrapper.appendChild(note);
-    if (showNote) requestAnimationFrame(() => autoResize(note));
-
-    if (node.children.length) {
-      const childrenWrap = document.createElement('div');
-      childrenWrap.className = 'children-wrap' + (node.collapsed ? ' collapsed' : '');
-      const inner = document.createElement('div');
-      inner.className = 'children-inner';
-      node.children.forEach(c => inner.appendChild(buildNodeEl(c, depth + 1, false)));
-      childrenWrap.appendChild(inner);
-      wrapper.appendChild(childrenWrap);
-    }
-    return wrapper;
-  }
-
-  function onContentInput(el, node, row) {
-    const caret = getCaretOffset(el);
-    let text = el.textContent;
-    let newCaret = caret;
-    if (caret > 0 && text[caret - 1] === '!') {
-      text = text.slice(0, caret - 1) + text.slice(caret);
-      newCaret = caret - 1;
-      node.text = text;
-      el.innerHTML = highlightText(text);
-      setCaretByOffset(el, newCaret);
-      openDatePopover(node, row);
-      scheduleSave();
-      return;
-    }
-    node.text = text;
-    el.innerHTML = highlightText(text);
-    setCaretByOffset(el, newCaret);
-    scheduleSave();
-  }
-
-  function toggleCollapse(id) {
-    const node = findNode(tree, id);
-    node.collapsed = !node.collapsed;
-    const wrapperEl = document.querySelector('.node-wrapper[data-id="' + id + '"]');
-    if (wrapperEl) {
-      const childrenWrap = wrapperEl.querySelector(':scope > .children-wrap');
-      const caretEl = wrapperEl.querySelector(':scope > .row > .caret');
-      if (childrenWrap) childrenWrap.classList.toggle('collapsed', node.collapsed);
-      if (caretEl) caretEl.classList.toggle('collapsed', node.collapsed);
-    }
-    scheduleSave();
-  }
-
-  function collectByFilter(mode) {
-    const results = [];
-    (function walk(node, path) {
-      for (const c of node.children) {
-        const isMatch = mode === 'today' ? c.date === todayStr() : (mode === 'overdue' ? (c.date && c.date < todayStr()) : false);
-        if (isMatch) results.push({ node: c, path: path.slice() });
-        walk(c, path.concat([c.text || '(untitled)']));
-      }
-    })(tree, []);
-    return results;
-  }
-
-  function searchMatches(query) {
-    const q = query.trim().toLowerCase();
-    if (!q) return [];
-    const results = [];
-    (function walk(node, path) {
-      for (const c of node.children) {
-        const hit = (c.text || '').toLowerCase().includes(q) || (c.note || '').toLowerCase().includes(q);
-        if (hit) results.push({ node: c, path: path.slice() });
-        walk(c, path.concat([c.text || '(untitled)']));
-      }
-    })(tree, []);
-    return results;
-  }
-
-  function renderFlatList(items, emptyText, onNavigate) {
-    const listEl = document.getElementById('outline-list');
-    if (items.length === 0) {
-      const empty = document.createElement('div');
-      empty.className = 'empty-state';
-      empty.textContent = emptyText;
-      listEl.appendChild(empty);
-      return;
-    }
-    items.forEach(({ node, path }) => {
-      const wrapper = document.createElement('div');
-      wrapper.className = 'node-wrapper';
-      const row = document.createElement('div');
-      row.className = 'row';
-      const marker = document.createElement('div');
-      marker.className = 'caret leaf';
-      marker.textContent = '\u203A';
-      row.appendChild(marker);
-      const content = document.createElement('div');
-      content.className = 'content';
-      content.contentEditable = 'true';
-      content.innerHTML = highlightText(node.text);
-      content.addEventListener('input', () => onContentInput(content, node, row));
-      content.addEventListener('keydown', (e) => onKeyDown(e, node.id));
-      row.appendChild(content);
-      if (node.date) {
-        const badge = document.createElement('div');
-        badge.className = 'date-badge ' + dateClass(node.date);
-        badge.textContent = formatDate(node.date);
-        badge.onclick = (e) => { e.stopPropagation(); openDatePopover(node, row); };
-        row.appendChild(badge);
-      }
-      const zoomBtn = document.createElement('div');
-      zoomBtn.className = 'zoom-btn';
-      zoomBtn.style.opacity = '1';
-      zoomBtn.style.pointerEvents = 'auto';
-      zoomBtn.innerHTML = ZOOM_ICON;
-      zoomBtn.onclick = () => onNavigate(node);
-      row.appendChild(zoomBtn);
-      wrapper.appendChild(row);
-      if (path.length) { const p = document.createElement('div'); p.className = 'filtered-path'; p.textContent = path.join(' \u203A '); wrapper.appendChild(p); }
-      listEl.appendChild(wrapper);
-    });
-  }
-
-  function render() {
-    renderBreadcrumb();
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === filterMode && !searchQuery.trim()));
-    const listEl = document.getElementById('outline-list');
-    listEl.innerHTML = '';
-
-    if (searchQuery.trim()) {
-      renderFlatList(searchMatches(searchQuery), 'no matches', (node) => {
-        zoomStack = ['root'].concat(pathTo(tree, node.id, []) || []);
-        searchQuery = '';
-        const si = document.getElementById('search-input');
-        si.value = ''; si.classList.remove('expanded');
-        render();
-      });
-      return;
-    }
-
-    if (filterMode !== 'all') {
-      renderFlatList(collectByFilter(filterMode), filterMode === 'today' ? 'nothing due today' : 'nothing overdue', (node) => {
-        zoomStack = ['root'].concat(pathTo(tree, node.id, []) || []);
-        filterMode = 'all';
-        render();
-      });
-      return;
-    }
-
-    const viewRoot = currentViewRoot();
-    if (viewRoot.children.length === 0) {
-      const empty = document.createElement('div');
-      empty.className = 'empty-state click-add';
-      empty.textContent = '';
-      empty.onclick = addBullet;
-      listEl.appendChild(empty);
-    } else {
-      viewRoot.children.forEach((c, i) => listEl.appendChild(buildNodeEl(c, 0, i === 0)));
-      const spacer = document.createElement('div');
-      spacer.className = 'click-add';
-      spacer.onclick = addBullet;
-      listEl.appendChild(spacer);
-    }
-    if (pendingNewId) {
-      const id = pendingNewId; pendingNewId = null;
-      requestAnimationFrame(() => requestAnimationFrame(() => { const row = document.querySelector('.node-wrapper[data-id="' + id + '"] > .row'); if (row) row.classList.remove('entering'); }));
-    }
-    if (pendingFocus) { const { id, atStart } = pendingFocus; pendingFocus = null; focusNode(id, atStart); }
-  }
-
-  function focusNode(id, atStart) {
-    requestAnimationFrame(() => {
-      const el = document.querySelector('.content[data-id="' + id + '"]');
-      if (!el) return;
-      el.focus();
-      const range = document.createRange(); const sel = window.getSelection();
-      range.selectNodeContents(el); range.collapse(!!atStart);
-      sel.removeAllRanges(); sel.addRange(range);
-    });
   }
 
   function getCaretOffset(el) {
@@ -534,39 +582,189 @@
     const range = sel.getRangeAt(0);
     const pre = range.cloneRange();
     pre.selectNodeContents(el);
-    pre.setEnd(range.endContainer, range.endOffset);
+    pre.setEnd(range.startContainer, range.startOffset);
     return pre.toString().length;
   }
 
   function setCaretByOffset(el, offset) {
     const sel = window.getSelection();
     const range = document.createRange();
-    let remaining = offset, node = null, nodeOffset = 0;
-    (function walk(n) {
-      if (node) return;
+    let remaining = offset, targetNode = el, targetOffset = 0;
+    function walk(n) {
       if (n.nodeType === Node.TEXT_NODE) {
         const len = n.textContent.length;
-        if (remaining <= len) { node = n; nodeOffset = remaining; return; }
+        if (remaining <= len) { targetNode = n; targetOffset = remaining; return true; }
         remaining -= len;
-      } else { for (const child of n.childNodes) { walk(child); if (node) return; } }
-    })(el);
-    if (!node) { node = el; nodeOffset = el.childNodes.length; }
-    range.setStart(node, nodeOffset); range.collapse(true);
+      } else {
+        for (const child of n.childNodes) { if (walk(child)) return true; }
+      }
+      return false;
+    }
+    walk(el);
+    range.setStart(targetNode, targetOffset); range.collapse(true);
     sel.removeAllRanges(); sel.addRange(range);
+  }
+
+  function buildNodeEl(node, depth) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'node-wrapper' + (node.completed ? ' completed' : '') + (hideCompleted && node.completed ? ' is-hidden' : '');
+    wrapper.dataset.id = node.id;
+
+    const hasChildren = node.children && node.children.length > 0;
+
+    const row = document.createElement('div');
+    row.className = 'row' + (hasChildren ? ' has-children' : '');
+    const indentPx = depth * 24;
+    row.style.marginLeft = indentPx + 'px';
+
+    const isLeaf = !hasChildren;
+    
+    const caret = document.createElement('div');
+    caret.className = 'caret' + (isLeaf ? ' leaf' : '') + (node.collapsed ? ' collapsed' : '');
+    caret.textContent = '▾';
+    if (!isLeaf) caret.onclick = () => toggleCollapse(node.id);
+    row.appendChild(caret);
+
+    /* Bullet Dot: Click to ZOOM IN */
+    const bullet = document.createElement('div');
+    bullet.className = 'bullet-dot';
+    bullet.title = 'Click to zoom in';
+    bullet.onclick = () => { zoomStack.push(node.id); render(); };
+    row.appendChild(bullet);
+
+    const content = document.createElement('div');
+    content.className = 'content';
+    content.contentEditable = 'true';
+    content.dataset.id = node.id;
+    content.innerHTML = highlightText(node.text);
+    
+    content.addEventListener('focus', () => setActive(node.id));
+    content.addEventListener('input', () => onContentInput(content, node, row));
+    content.addEventListener('keydown', (e) => onKeyDown(e, node.id));
+    row.appendChild(content);
+
+    /* Date Badge & Recurring Tag */
+    if (node.date || node.recurring) {
+      const badge = document.createElement('div');
+      badge.className = 'date-badge ' + (node.date ? dateClass(node.date) : 'd-future');
+      badge.innerHTML = (node.date ? formatDate(node.date) : 'No date') + (node.recurring ? ` <span class="tag-repeat">↻ ${node.recurring}</span>` : '');
+      badge.onclick = (e) => { e.stopPropagation(); openDatePopover(node, badge); };
+      row.appendChild(badge);
+    }
+
+    wrapper.appendChild(row);
+
+    /* Note Field: Rendered ONLY when present or triggered with Shift+Enter.
+       Indentation matches the text position (indentPx + 34px). */
+    const note = document.createElement('textarea');
+    note.className = 'note-field';
+    note.dataset.id = node.id;
+    note.style.marginLeft = (indentPx + 34) + 'px';
+    note.value = node.note || '';
+    note.rows = 1;
+    note.placeholder = "Add note...";
+    const showNote = !!(node.note && node.note.trim()) || node.id === activeId && node.showNote;
+    note.style.display = showNote ? 'block' : 'none';
+    note.addEventListener('focus', () => setActive(node.id));
+    note.addEventListener('input', () => { node.note = note.value; autoResize(note); scheduleSave(); });
+    note.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' || (e.key === 'Enter' && !e.shiftKey)) { 
+        e.preventDefault(); 
+        if (!note.value.trim()) { node.note = ''; node.showNote = false; note.style.display = 'none'; }
+        focusNode(node.id, false); 
+      }
+    });
+    note.addEventListener('blur', () => {
+      if (!note.value.trim()) { node.note = ''; node.showNote = false; note.style.display = 'none'; }
+    });
+    wrapper.appendChild(note);
+    if (showNote) requestAnimationFrame(() => autoResize(note));
+
+    if (hasChildren) {
+      const childrenWrap = document.createElement('div');
+      childrenWrap.className = 'children-wrap' + (node.collapsed ? ' collapsed' : '');
+      const inner = document.createElement('div');
+      inner.className = 'children-inner';
+      node.children.forEach(c => inner.appendChild(buildNodeEl(c, depth + 1)));
+      childrenWrap.appendChild(inner);
+      wrapper.appendChild(childrenWrap);
+    }
+    return wrapper;
+  }
+
+  function onContentInput(el, node, row) {
+    let caretOffset = getCaretOffset(el);
+    let text = el.textContent;
+
+    if (caretOffset > 0 && text[caretOffset - 1] === '!') {
+      text = text.slice(0, caretOffset - 1) + text.slice(caretOffset);
+      caretOffset -= 1;
+      node.text = text;
+      el.innerHTML = highlightText(text);
+      setCaretByOffset(el, caretOffset);
+      openDatePopover(node, row);
+      scheduleSave();
+      return;
+    }
+
+    node.text = text;
+    el.innerHTML = highlightText(text);
+    setCaretByOffset(el, caretOffset);
+    scheduleSave();
+  }
+
+  function toggleCollapse(id) {
+    const node = findNode(tree, id);
+    node.collapsed = !node.collapsed;
+    render();
+    scheduleSave();
   }
 
   function onKeyDown(e, id) {
     const node = findNode(tree, id);
     const el = e.target;
 
+    /* Shift+Enter: Show/Add Note under item */
     if (e.key === 'Enter' && e.shiftKey) {
       e.preventDefault();
+      node.showNote = true;
       setActive(id);
       const note = document.querySelector('.note-field[data-id="' + id + '"]');
-      if (note) { note.focus(); autoResize(note); }
+      if (note) { 
+        note.style.display = 'block'; 
+        note.focus(); 
+        autoResize(note); 
+      }
       return;
     }
 
+    /* Ctrl+Enter or Cmd+Enter: Strikethrough Item & Regenerate if Recurring */
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      node.completed = !node.completed;
+
+      // Recurring Task Logic: If checking off a recurring task, generate next instance!
+      if (node.completed && node.recurring) {
+        const nextDate = calcNextDate(node.date, node.recurring);
+        const sib = siblingsAndIndex(id);
+        const nextNode = {
+          id: newId(),
+          text: node.text,
+          note: node.note,
+          date: nextDate,
+          recurring: node.recurring,
+          completed: false,
+          children: JSON.parse(JSON.stringify(node.children))
+        };
+        sib.parent.children.splice(sib.idx + 1, 0, nextNode);
+      }
+
+      render();
+      scheduleSave();
+      return;
+    }
+
+    /* Regular Enter: Create new bullet sibling */
     if (e.key === 'Enter') {
       e.preventDefault();
       const offset = getCaretOffset(el);
@@ -574,16 +772,13 @@
       const after = node.text.slice(offset);
       node.text = before;
       const sib = siblingsAndIndex(id);
-      const newNode = { id: newId(), text: after, note: '', date: null, collapsed: false, children: [] };
+      const newNode = { id: newId(), text: after, note: '', date: null, recurring: null, completed: false, children: [] };
       sib.parent.children.splice(sib.idx + 1, 0, newNode);
-      pendingNewId = newNode.id;
       pendingFocus = { id: newNode.id, atStart: true };
       render();
       scheduleSave();
       return;
     }
-
-    if (e.key === 'Escape') { closePopover(); return; }
 
     if (e.key === 'Tab') {
       e.preventDefault();
@@ -610,11 +805,13 @@
     if (e.key === 'Backspace') {
       const offset = getCaretOffset(el);
       if (offset === 0) {
-        const flat = getVisibleFlat(currentViewRoot());
-        const i = flat.findIndex(f => f.node.id === id);
+        const viewRoot = currentViewRoot();
+        const flat = [];
+        (function walk(n) { for (const c of n.children) { flat.push(c); if (!c.collapsed) walk(c); } })(viewRoot);
+        const i = flat.findIndex(f => f.id === id);
         if (i > 0) {
           e.preventDefault();
-          const prev = flat[i - 1].node;
+          const prev = flat[i - 1];
           const sib = siblingsAndIndex(id);
           prev.text = prev.text + node.text;
           prev.note = prev.note || node.note || '';
@@ -627,81 +824,186 @@
       }
       return;
     }
-
-    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-      e.preventDefault();
-      const flat = getVisibleFlat(currentViewRoot());
-      const i = flat.findIndex(f => f.node.id === id);
-      const targetI = e.key === 'ArrowUp' ? i - 1 : i + 1;
-      if (targetI >= 0 && targetI < flat.length) focusNode(flat[targetI].node.id);
-      return;
-    }
   }
 
-  function exportText() {
-    const lines = [];
-    (function walk(node, depth) {
-      for (const c of node.children) {
-        let line = '  '.repeat(depth) + '- ' + c.text + (c.date ? ' (!' + c.date + ')' : '');
-        lines.push(line);
-        if (c.note) lines.push('  '.repeat(depth) + '    ' + c.note);
-        walk(c, depth + 1);
+  function render() {
+    renderBreadcrumbAndHeader();
+    document.querySelectorAll('.filter-btn').forEach(b => {
+      if (b.dataset.filter) {
+        b.classList.toggle('active', b.dataset.filter === filterMode && !searchQuery.trim());
       }
-    })(tree, 0);
-    const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a'); a.href = url; a.download = 'outline.txt'; a.click();
-    URL.revokeObjectURL(url);
+    });
+    
+    const listEl = document.getElementById('outline-list');
+    listEl.innerHTML = '';
+
+    const viewRoot = currentViewRoot();
+    if (viewRoot.children.length === 0) {
+      const empty = document.createElement('div');
+      empty.className = 'empty-state click-add';
+      empty.textContent = 'Click to add item...';
+      empty.onclick = addBullet;
+      listEl.appendChild(empty);
+    } else {
+      viewRoot.children.forEach((c) => listEl.appendChild(buildNodeEl(c, 0)));
+      const spacer = document.createElement('div');
+      spacer.className = 'click-add';
+      spacer.style.height = '150px';
+      spacer.onclick = addBullet;
+      listEl.appendChild(spacer);
+    }
+    if (pendingFocus) { const { id, atStart } = pendingFocus; pendingFocus = null; focusNode(id, atStart); }
+  }
+
+  function focusNode(id, atStart) {
+    requestAnimationFrame(() => {
+      const el = document.querySelector('.content[data-id="' + id + '"]');
+      if (!el) return;
+      el.focus();
+      const range = document.createRange(); const sel = window.getSelection();
+      range.selectNodeContents(el); range.collapse(!!atStart);
+      sel.removeAllRanges(); sel.addRange(range);
+    });
   }
 
   function addBullet() {
     filterMode = 'all';
     searchQuery = '';
-    const si = document.getElementById('search-input');
-    si.value = ''; si.classList.remove('expanded');
+    document.getElementById('search-input').value = '';
     const viewRoot = currentViewRoot();
-    const n = { id: newId(), text: '', note: '', date: null, collapsed: false, children: [] };
+    const n = { id: newId(), text: '', note: '', date: null, recurring: null, completed: false, children: [] };
     viewRoot.children.push(n);
-    pendingNewId = n.id;
     pendingFocus = { id: n.id, atStart: true };
     render();
     scheduleSave();
   }
 
-  document.getElementById('btn-export').onclick = exportText;
-  document.getElementById('btn-home').onclick = () => { zoomStack = ['root']; filterMode = 'all'; searchQuery = ''; document.getElementById('search-input').value=''; render(); };
-  document.getElementById('btn-calendar').onclick = () => { searchQuery=''; document.getElementById('search-input').value=''; filterMode = filterMode === 'today' ? 'all' : 'today'; render(); };
+  /* Menu Toggle & Actions */
+  const btnMenu = document.getElementById('btn-menu');
+  const dropdownMenu = document.getElementById('dropdown-menu');
 
-  const searchInput = document.getElementById('search-input');
-  searchInput.addEventListener('input', (e) => { searchQuery = e.target.value; render(); });
-  searchInput.addEventListener('focus', () => searchInput.classList.add('expanded'));
-  searchInput.addEventListener('blur', () => { if (!searchInput.value.trim()) searchInput.classList.remove('expanded'); });
+  function closeMenu() { dropdownMenu.classList.remove('show'); }
+  btnMenu.onclick = (e) => { e.stopPropagation(); dropdownMenu.classList.toggle('show'); };
+  document.addEventListener('click', (e) => { if (!e.target.closest('.menu-container')) closeMenu(); });
 
-  document.querySelectorAll('.filter-btn').forEach(b => {
-    b.onclick = () => { searchQuery = ''; searchInput.value = ''; searchInput.classList.remove('expanded'); filterMode = b.dataset.filter; render(); };
-  });
-  document.addEventListener('mousedown', (e) => { if (!e.target.closest('.date-popover') && !e.target.closest('.date-badge')) closePopover(); });
-
-  const ICON_SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>';
-  const ICON_MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
-  const themeBtn = document.getElementById('theme-toggle');
-  function applyTheme(mode) {
-    document.documentElement.setAttribute('data-theme', mode);
-    themeBtn.innerHTML = mode === 'light' ? ICON_MOON : ICON_SUN;
-  }
-  (async () => {
-    const saved = await storageGet(THEME_KEY);
-    applyTheme(saved === 'light' ? 'light' : 'dark');
-  })();
-  themeBtn.onclick = async () => {
-    const current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
-    const next = current === 'light' ? 'dark' : 'light';
-    applyTheme(next);
-    await storageSet(THEME_KEY, next);
+  /* Hide Completed Toggle */
+  document.getElementById('toggle-hide-completed').onchange = (e) => {
+    hideCompleted = e.target.checked;
+    render();
+    scheduleSave();
   };
 
-  const statusEl0 = document.getElementById('save-status');
-  if (!hasCloudStorage && statusEl0) { statusEl0.style.opacity = '1'; statusEl0.textContent = 'local file mode'; setTimeout(() => statusEl0.style.opacity = '0', 2000); }
+  /* Clear Completed Action */
+  document.getElementById('menu-clear-completed').onclick = () => {
+    closeMenu();
+    function purge(node) {
+      node.children = node.children.filter(c => !c.completed);
+      node.children.forEach(purge);
+    }
+    purge(tree);
+    render();
+    scheduleSave();
+  };
+
+  /* Export Markdown */
+  document.getElementById('menu-export').onclick = () => {
+    closeMenu();
+    const lines = [];
+    (function walk(node, depth) {
+      for (const c of node.children) {
+        let line = '  '.repeat(depth) + '- ' + (c.completed ? '[x] ' : '') + c.text + (c.date ? ' (!' + c.date + ')' : '');
+        lines.push(line);
+        if (c.note) {
+          c.note.split('\n').forEach(nl => lines.push('  '.repeat(depth) + '  ' + nl));
+        }
+        walk(c, depth + 1);
+      }
+    })(tree, 0);
+    const blob = new Blob([lines.join('\n')], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = 'notes.md'; a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  /* Import Markdown */
+  const importFileInput = document.getElementById('import-file-input');
+  document.getElementById('menu-import').onclick = () => { closeMenu(); importFileInput.click(); };
+
+  importFileInput.onchange = (e) => {
+    const file = e.target.files[0]; if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      const parsed = parseMarkdown(evt.target.result);
+      if (parsed.length > 0) {
+        const viewRoot = currentViewRoot();
+        viewRoot.children = viewRoot.children.concat(parsed);
+        render(); scheduleSave();
+      }
+      importFileInput.value = '';
+    };
+    reader.readAsText(file);
+  };
+
+  function parseMarkdown(text) {
+    const lines = text.split(/\r?\n/);
+    const rootChildren = [];
+    const stack = [{ indent: -1, children: rootChildren, lastNode: null }];
+
+    for (let rawLine of lines) {
+      if (!rawLine.trim()) continue;
+      const indentMatch = rawLine.match(/^(\s*)/);
+      const indent = indentMatch ? indentMatch[1].replace(/\t/g, '    ').length : 0;
+      const isBullet = /^\s*([-*+]|\d+\.)\s+/.test(rawLine);
+      let lineText = rawLine.replace(/^\s*([-*+]|\d+\.|\#+)\s+/, '').trim();
+
+      let completed = false;
+      if (lineText.startsWith('[x] ') || lineText.startsWith('[X] ')) {
+        completed = true;
+        lineText = lineText.slice(4);
+      }
+
+      let date = null;
+      const dateMatch = lineText.match(/\(!(\d{4}-\d{2}-\d{2})\)/);
+      if (dateMatch) { date = dateMatch[1]; lineText = lineText.replace(/\(!\d{4}-\d{2}-\d{2}\)/, '').trim(); }
+
+      if (isBullet) {
+        const node = { id: newId(), text: lineText, note: '', date: date, recurring: null, completed: completed, collapsed: false, children: [] };
+        while (stack.length > 1 && stack[stack.length - 1].indent >= indent) stack.pop();
+        stack[stack.length - 1].children.push(node);
+        stack.push({ indent: indent, children: node.children, lastNode: node });
+      } else {
+        const curr = stack[stack.length - 1].lastNode;
+        if (curr) curr.note = curr.note ? curr.note + '\n' + lineText : lineText;
+      }
+    }
+    return rootChildren;
+  }
+
+  /* Theme Control Switch */
+  const ICON_SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>';
+  const ICON_MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  const toggleThemeInput = document.getElementById('toggle-theme');
+
+  function applyTheme(mode) {
+    document.documentElement.setAttribute('data-theme', mode);
+    toggleThemeInput.checked = (mode === 'dark');
+    document.getElementById('theme-icon').outerHTML = mode === 'dark' ? ICON_MOON : ICON_SUN;
+  }
+
+  toggleThemeInput.onchange = async (e) => {
+    const mode = e.target.checked ? 'dark' : 'light';
+    applyTheme(mode);
+    await storageSet('theme', mode);
+  };
+
+  (async () => {
+    const saved = await storageGet('theme');
+    applyTheme(saved === 'light' ? 'light' : 'dark');
+  })();
+
+  /* Header Brand Click -> Return to Home */
+  document.getElementById('app-title').onclick = () => { zoomStack = ['root']; render(); };
+  document.getElementById('btn-home').onclick = () => { zoomStack = ['root']; render(); };
 
   load();
 })();

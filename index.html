@@ -57,21 +57,11 @@
   #app-shell { height: 100vh; width: 100vw; display: flex; flex-direction: column; background: var(--page-bg); transition: background-color 200ms ease; }
   #app-root { display: flex; flex-direction: column; height: 100%; max-width: 900px; width: 100%; margin: 0 auto; padding: 24px 32px; }
 
-  /* Header Bar with Delayed Fade-Out */
+  /* Header Bar — always visible (auto-hide removed per request) */
   #top-bar { 
     display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-shrink: 0; margin-bottom: 20px; 
-    max-height: 50px; overflow: visible; opacity: 1;
-    transition: max-height 400ms cubic-bezier(0.2, 0, 0, 1), margin 400ms cubic-bezier(0.2, 0, 0, 1), opacity 400ms ease;
   }
-  
-  /* Delayed Zen mode body class */
-  body.typing-mode #top-bar {
-    max-height: 0;
-    margin-bottom: 0;
-    opacity: 0;
-    pointer-events: none;
-  }
-  
+
   #top-left-group { display: flex; align-items: center; gap: 10px; }
   #app-title { font-size: 20px; font-weight: 700; letter-spacing: -0.01em; white-space: nowrap; cursor: pointer; }
   
@@ -83,19 +73,27 @@
   .icon-btn:hover { color: var(--dyn-text); background: var(--dyn-hover); }
   .icon-btn svg { width: 18px; height: 18px; }
 
-  /* Combined Filter Capsule */
-  #filters { display: flex; gap: 2px; align-items: center; background: var(--dyn-bg-raised); border-radius: 8px; padding: 3px; border: 0.5px solid var(--dyn-border); }
-  .filter-btn { font-size: 12.5px; font-weight: 500; padding: 4px 10px; border-radius: 6px; border: none; background: transparent; color: var(--dyn-text-muted); cursor: pointer; transition: background-color 150ms ease, color 150ms ease; display: flex; align-items: center; justify-content: center; }
+  /* Date Filter: collapsed to an icon by default, expands on click.
+     When active, a badge (label + ×) sits outside the collapse — always
+     reachable to clear without reopening the Today/Due picker. */
+  #filters { display: flex; align-items: center; }
+  #btn-search-toggle { position: relative; }
+  #btn-search-toggle.has-active::after { content: ''; position: absolute; top: 5px; right: 5px; width: 6px; height: 6px; border-radius: 50%; background: var(--dyn-accent); }
+  .filter-active-badge { display: none; align-items: center; gap: 2px; background: var(--dyn-accent-dim); color: var(--dyn-accent); border-radius: 8px; padding: 4px 4px 4px 10px; font-size: 12px; font-weight: 600; margin-left: 4px; }
+  .filter-active-badge.show { display: flex; }
+  .filter-badge-x { background: none; border: none; color: inherit; font-size: 15px; line-height: 1; padding: 2px 6px; border-radius: 6px; cursor: pointer; }
+  .filter-badge-x:hover { background: rgba(255,255,255,0.18); }
+  #filter-options { display: none; align-items: center; gap: 2px; background: var(--dyn-bg-raised); border-radius: 8px; padding: 3px; border: 0.5px solid var(--dyn-border); margin-left: 4px; }
+  #filters.expanded #filter-options { display: flex; }
+  .filter-btn { font-size: 12.5px; font-weight: 500; padding: 4px 10px; border-radius: 6px; border: none; background: transparent; color: var(--dyn-text-muted); cursor: pointer; transition: background-color 150ms ease, color 150ms ease; }
   .filter-btn:hover { color: var(--dyn-text-secondary); }
   .filter-btn.active { background: var(--dyn-accent-dim); color: var(--dyn-accent); }
-  .filter-btn.icon-filter { padding: 4px 6px; }
-  .filter-btn.icon-filter svg { width: 15px; height: 15px; }
 
-  /* Search Container (Appears BEFORE date filter) */
-  #search-box { position: relative; display: flex; align-items: center; }
-  #search-box .search-icon { position: absolute; left: 9px; width: 14px; height: 14px; color: var(--dyn-text-muted); pointer-events: none; }
-  #search-input { width: 130px; height: 32px; font-size: 13px; padding: 0 10px 0 28px; border-radius: 8px; border: 0.5px solid var(--dyn-border); background: var(--dyn-bg-raised); color: var(--dyn-text); outline: none; transition: width 180ms ease, border-color 150ms ease; }
-  #search-input:focus { border-color: var(--dyn-accent); width: 180px; }
+  /* Search: collapsed to an icon by default, expands into the input on click */
+  #search-box { display: flex; align-items: center; }
+  #search-input { width: 0; height: 32px; font-size: 13px; padding: 0; border-radius: 8px; border: 0.5px solid transparent; background: var(--dyn-bg-raised); color: var(--dyn-text); outline: none; opacity: 0; transition: width 180ms ease, padding 180ms ease, opacity 120ms ease, border-color 150ms ease; }
+  #search-box.expanded #search-input { width: 160px; padding: 0 10px; opacity: 1; border-color: var(--dyn-border); margin-left: 4px; }
+  #search-input:focus { border-color: var(--dyn-accent); }
   #search-input::placeholder { color: var(--dyn-text-muted); }
 
   /* Redesigned Menu UX */
@@ -238,7 +236,7 @@
   /* Row hover actions (move-to-hierarchy button) */
   .row-move-btn { opacity: 0; width: 24px; height: 26px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 6px; color: var(--dyn-text-muted); transition: opacity 120ms ease, color 150ms ease, background-color 150ms ease; margin-top: 1px; }
   .row-move-btn svg { width: 14px; height: 14px; }
-  .row:hover .row-move-btn { opacity: 1; }
+  .row:hover .row-move-btn, .row-move-btn:focus { opacity: 1; }
   .row-move-btn:hover { color: var(--dyn-text); background: var(--dyn-hover); }
 
   /* Generic fixed popover (date picker / move picker) */
@@ -252,6 +250,13 @@
   #send-to-list { display: flex; flex-direction: column; gap: 2px; max-height: 320px; overflow-y: auto; }
   #send-to-list button { text-align: left; padding: 8px 10px; font-size: 13px; border: none; border-radius: 6px; background: transparent; color: var(--dyn-text-secondary); cursor: pointer; width: 100%; }
   #send-to-list button:hover { background: var(--dyn-hover); color: var(--dyn-text); }
+
+  /* #hashtag / @name suggestion dropdown */
+  #tag-suggest-popover { position: fixed; z-index: 1500; background: var(--dyn-bg-raised); border: 0.5px solid var(--dyn-border); border-radius: 10px; padding: 4px; box-shadow: 0 12px 32px rgba(0,0,0,0.5); min-width: 120px; max-width: 240px; max-height: 220px; overflow-y: auto; }
+  .tag-suggest-item { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 6px 8px; border-radius: 6px; cursor: pointer; }
+  .tag-suggest-item:hover, .tag-suggest-item.active { background: var(--dyn-hover); }
+  .tag-suggest-item .tag-hash, .tag-suggest-item .tag-at { pointer-events: none; }
+  .tag-suggest-count { font-size: 10.5px; color: var(--dyn-text-muted); flex-shrink: 0; }
 
   /* Dynamic Floating Popover (Fixed positioning prevents cutoff) */
   #global-popover { 
@@ -344,20 +349,29 @@
       </div>
       
       <div id="nav-group">
-        <!-- Search Field (Placed BEFORE filter options) -->
+        <!-- Search: collapsed to just the icon; click expands the input -->
         <div id="search-box">
-          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <button class="icon-btn" id="btn-search-toggle" title="Search" aria-label="Search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          </button>
           <input id="search-input" type="text" placeholder="Search...">
         </div>
 
-        <!-- Filter Capsule -->
+        <!-- Date filter: collapsed to just the icon; click expands Today / Due.
+             When a filter is active, a badge with its own '×' sits outside
+             the collapse so it's always reachable without reopening the panel. -->
         <div id="filters">
-          <button class="filter-btn icon-filter" id="btn-calendar" title="Toggle Today Filter" aria-label="Today Filter">
+          <button class="icon-btn" id="btn-filter-toggle" title="Filter by date" aria-label="Filter by date">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
           </button>
-          <button class="filter-btn active" data-filter="all">all</button>
-          <button class="filter-btn" data-filter="today">today</button>
-          <button class="filter-btn" data-filter="overdue">overdue</button>
+          <div id="filter-active-badge" class="filter-active-badge">
+            <span id="filter-active-label"></span>
+            <button id="btn-filter-clear" class="filter-badge-x" title="Clear filter" aria-label="Clear filter">&times;</button>
+          </div>
+          <div id="filter-options">
+            <button class="filter-btn" data-filter="today">Today</button>
+            <button class="filter-btn" data-filter="overdue">Due</button>
+          </div>
         </div>
 
         <!-- Redesigned Vertical Dot Menu -->
@@ -445,11 +459,24 @@
   let pendingFocus = null;
   let activeId = null;
   let searchQuery = '';
-  let zenTimeout = null;
 
   function newId() { return 'n' + Date.now().toString(36) + (idCounter++); }
   function escapeHtml(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
   function unescapeHtml(s) { return s.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&'); }
+
+  // Makes a non-<button> element (div/span used as a control) reachable by
+  // Tab and activatable with Enter/Space, matching native button semantics.
+  function makeKeyboardActivatable(el, handler, role) {
+    el.tabIndex = 0;
+    el.setAttribute('role', role || 'button');
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        e.stopPropagation();
+        handler(e);
+      }
+    });
+  }
   
   function renderInlineContent(text) {
     const esc = escapeHtml(text || '');
@@ -466,10 +493,19 @@
   function findParent(node, id, parent) { if (node.id === id) return parent; for (const c of node.children) { const r = findParent(c, id, node); if (r !== null) return r; } return null; }
   function siblingsAndIndex(id) { const parent = findParent(tree, id, null); if (!parent) return null; return { parent, idx: parent.children.findIndex(c => c.id === id) }; }
 
-  // Guards against a stale zoom target (e.g. the zoomed-into node got
-  // removed by Clear Completed) which previously crashed breadcrumb render.
+  // Guards against a stale or structurally-broken zoom path. Two cases:
+  // (1) the zoomed-into node was deleted outright (e.g. by Clear Completed),
+  // (2) a node that was moved/dragged elsewhere (Move to..., drag-and-drop,
+  // Ctrl+Shift+M) still exists but is no longer actually nested under the
+  // previous crumb — the old code only checked the LAST id's existence, so
+  // the breadcrumb trail could keep showing a path that no longer matches
+  // the tree. This walks the full chain and truncates at the first break.
   function sanitizeZoomStack() {
-    while (zoomStack.length > 1 && !findNode(tree, zoomStack[zoomStack.length - 1])) zoomStack.pop();
+    for (let i = 1; i < zoomStack.length; i++) {
+      const parent = findNode(tree, zoomStack[i - 1]);
+      const isStillChild = parent && parent.children.some(c => c.id === zoomStack[i]);
+      if (!isStillChild) { zoomStack = zoomStack.slice(0, i); break; }
+    }
     if (zoomStack.length === 0) zoomStack = ['root'];
   }
 
@@ -512,35 +548,15 @@
     return visible;
   }
 
-  /* Auto-hide header while actively typing. The class semantics here
-     were previously inverted (header showed while typing, hid 3s after
-     you stopped) — this hides immediately on activity and reveals
-     after 3s of no further keystrokes, or instantly on mouse move. */
-  function isEditableEl(el) {
-    return !!(el && (el.isContentEditable || el.tagName === 'TEXTAREA' || el.tagName === 'INPUT'));
-  }
-  function hideHeaderSoon() {
-    document.body.classList.add('typing-mode');
-    clearTimeout(zenTimeout);
-    zenTimeout = setTimeout(() => { document.body.classList.remove('typing-mode'); }, 3000);
-  }
-  function showHeaderNow() {
-    document.body.classList.remove('typing-mode');
-    clearTimeout(zenTimeout);
-  }
-
-  document.addEventListener('focusin', (e) => { if (isEditableEl(e.target)) hideHeaderSoon(); });
-  document.addEventListener('mousemove', showHeaderNow);
+  // Escape: blur focus and close any open popover/menu/palette. (Auto-hide
+  // header was removed — the header now always stays visible.)
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-      showHeaderNow();
       if (document.activeElement) document.activeElement.blur();
       closePopover();
       closeMenu();
       closeSendToPalette();
-      return;
     }
-    if (isEditableEl(e.target)) hideHeaderSoon();
   });
 
   async function storageGet(key) {
@@ -714,7 +730,9 @@
       span.className = 'crumb';
       span.textContent = rawLabel.length > 30 ? rawLabel.slice(0, 30) + '\u2026' : rawLabel;
       span.title = rawLabel;
-      span.onclick = () => { zoomStack = zoomStack.slice(0, i + 1); render(); };
+      const jumpTo = () => { zoomStack = zoomStack.slice(0, i + 1); render(); };
+      span.onclick = jumpTo;
+      if (i < zoomStack.length - 1) makeKeyboardActivatable(span, jumpTo); // last crumb is already "here"
       el.appendChild(span);
       if (i < zoomStack.length - 1) { const sep = document.createElement('span'); sep.className = 'crumb-sep'; sep.textContent = '\u203A'; el.appendChild(sep); }
     });
@@ -784,6 +802,15 @@
     };
     let calView = draft.date ? (() => { const [y,m,d] = draft.date.split('-').map(Number); return new Date(y, m-1, 1); })() : new Date(new Date().getFullYear(), new Date().getMonth(), 1);
 
+    function commitDraft() {
+      node.date = draft.date;
+      node.time = draft.time;
+      node.recurring = draft.recurring === 'never' ? null : draft.recurring;
+      node.recurInterval = draft.recurring === 'custom' ? draft.recurInterval : null;
+      node.recurUnit = draft.recurring === 'custom' ? draft.recurUnit : null;
+      closePopover(); render(); scheduleSave();
+    }
+
     const hdr = document.createElement('div');
     hdr.className = 'pop-header';
     hdr.textContent = 'Set Due Date';
@@ -839,8 +866,7 @@
       btn.onclick = (e) => {
         e.stopPropagation();
         draft.date = d; draft.time = opt.time;
-        const [y,m,dd] = d.split('-').map(Number); calView = new Date(y, m-1, 1);
-        refresh();
+        commitDraft();
       };
       quickGrid.appendChild(btn);
     });
@@ -956,15 +982,7 @@
     cancelBtn.onclick = (e) => { e.stopPropagation(); closePopover(); };
     const applyBtn = document.createElement('button');
     applyBtn.className = 'dp-btn-primary'; applyBtn.type = 'button'; applyBtn.textContent = 'Apply';
-    applyBtn.onclick = (e) => {
-      e.stopPropagation();
-      node.date = draft.date;
-      node.time = draft.time;
-      node.recurring = draft.recurring === 'never' ? null : draft.recurring;
-      node.recurInterval = draft.recurring === 'custom' ? draft.recurInterval : null;
-      node.recurUnit = draft.recurring === 'custom' ? draft.recurUnit : null;
-      closePopover(); render(); scheduleSave();
-    };
+    applyBtn.onclick = (e) => { e.stopPropagation(); commitDraft(); };
     actions.appendChild(cancelBtn); actions.appendChild(applyBtn);
     footer.appendChild(clearBtn); footer.appendChild(actions);
     pop.appendChild(footer);
@@ -1268,15 +1286,21 @@
     const caret = document.createElement('div');
     caret.className = 'caret' + (isLeaf ? ' leaf' : '') + (effectiveCollapsed ? ' collapsed' : '');
     caret.textContent = '▾';
-    if (!isLeaf) caret.onclick = () => toggleCollapse(node.id);
+    if (!isLeaf) {
+      caret.title = effectiveCollapsed ? 'Expand' : 'Collapse';
+      caret.onclick = () => toggleCollapse(node.id);
+      makeKeyboardActivatable(caret, () => toggleCollapse(node.id));
+    }
     row.appendChild(caret);
 
-    /* Bullet Dot: Click to ZOOM IN, drag to move the node elsewhere */
+    /* Bullet Dot: Click (or Enter/Space when focused) to ZOOM IN, drag to move */
     const bullet = document.createElement('div');
     bullet.className = 'bullet-dot';
     bullet.title = 'Click to zoom in \u00B7 drag to move';
     bullet.draggable = true;
-    bullet.onclick = () => { zoomStack.push(node.id); render(); };
+    const zoomIn = () => { zoomStack.push(node.id); render(); };
+    bullet.onclick = zoomIn;
+    makeKeyboardActivatable(bullet, zoomIn);
     bullet.addEventListener('dragstart', (e) => {
       dragNodeId = node.id;
       e.dataTransfer.effectAllowed = 'move';
@@ -1318,6 +1342,7 @@
     content.addEventListener('focus', () => setActive(node.id));
     content.addEventListener('input', () => onContentInput(content, node, row));
     content.addEventListener('keydown', (e) => onKeyDown(e, node.id));
+    content.addEventListener('blur', () => { if (tagSuggest && tagSuggest.el === content) closeTagSuggest(); });
     row.appendChild(content);
 
     /* Date Badge & Recurring Tag */
@@ -1329,7 +1354,9 @@
         ? `every ${node.recurInterval || 1} ${node.recurUnit || 'weeks'}`
         : node.recurring;
       badge.innerHTML = dateLabel + (node.recurring ? ` <span class="tag-repeat">↻ ${recurLabel}</span>` : '');
-      badge.onclick = (e) => { e.stopPropagation(); openDatePopover(node, badge); };
+      const openDp = () => openDatePopover(node, badge);
+      badge.onclick = (e) => { e.stopPropagation(); openDp(); };
+      makeKeyboardActivatable(badge, openDp);
       row.appendChild(badge);
     }
 
@@ -1338,7 +1365,9 @@
     moveBtn.className = 'row-move-btn';
     moveBtn.title = 'Move to...';
     moveBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="21" y1="3" x2="9" y2="15"/><path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h6"/></svg>';
-    moveBtn.onclick = (e) => { e.stopPropagation(); openMovePopover(node, moveBtn); };
+    const openMp = () => openMovePopover(node, moveBtn);
+    moveBtn.onclick = (e) => { e.stopPropagation(); openMp(); };
+    makeKeyboardActivatable(moveBtn, openMp);
     row.appendChild(moveBtn);
 
     wrapper.appendChild(row);
@@ -1359,6 +1388,7 @@
     note.addEventListener('input', () => onNoteInput(note, node));
     note.addEventListener('keydown', (e) => onNoteKeyDown(e, node.id, note));
     note.addEventListener('blur', () => {
+      if (tagSuggest && tagSuggest.el === note) closeTagSuggest();
       if (!note.textContent.trim()) { node.note = ''; node.showNote = false; note.style.display = 'none'; }
     });
     wrapper.appendChild(note);
@@ -1375,6 +1405,119 @@
     return wrapper;
   }
 
+  /* #hashtag / @name suggestions — scans the whole tree for tags already
+     in use and offers them back while typing a new one. */
+  let tagSuggest = null; // { el, node, isNote, trigger, start, items, index }
+
+  function collectAllTags() {
+    const hash = new Map(), at = new Map();
+    function scan(text) {
+      if (!text) return;
+      (text.match(/(^|\s)(#[\w-]+)/g) || []).forEach(m => {
+        const tag = m.trim(), key = tag.toLowerCase();
+        if (!hash.has(key)) hash.set(key, { display: tag, count: 0 });
+        hash.get(key).count++;
+      });
+      (text.match(/(^|\s)(@[\w-]+)/g) || []).forEach(m => {
+        const tag = m.trim(), key = tag.toLowerCase();
+        if (!at.has(key)) at.set(key, { display: tag, count: 0 });
+        at.get(key).count++;
+      });
+    }
+    (function walk(n) { scan(n.text); scan(n.note); n.children.forEach(walk); })(tree);
+    return { hash, at };
+  }
+
+  // Finds an in-progress #tag or @name ending exactly at the caret: walks
+  // back from the caret over an unbroken run of non-whitespace and checks
+  // whether it started with # or @.
+  function detectTagTrigger(text, caretOffset) {
+    let i = caretOffset - 1;
+    while (i >= 0 && text[i] !== '#' && text[i] !== '@' && !/\s/.test(text[i])) i--;
+    if (i < 0 || (text[i] !== '#' && text[i] !== '@')) return null;
+    return { trigger: text[i], start: i, partial: text.slice(i + 1, caretOffset) };
+  }
+
+  function getCaretClientRect(el) {
+    const sel = window.getSelection();
+    if (sel.rangeCount) {
+      const range = sel.getRangeAt(0).cloneRange();
+      range.collapse(true);
+      const rects = range.getClientRects();
+      if (rects.length) return rects[0];
+    }
+    return el.getBoundingClientRect();
+  }
+
+  function closeTagSuggest() {
+    const pop = document.getElementById('tag-suggest-popover');
+    if (pop) pop.remove();
+    tagSuggest = null;
+  }
+
+  function updateTagSuggest(el, node, isNote) {
+    const text = el.textContent;
+    const trig = detectTagTrigger(text, getCaretOffset(el));
+    if (!trig) { closeTagSuggest(); return; }
+
+    const pool = trig.trigger === '#' ? collectAllTags().hash : collectAllTags().at;
+    const q = (trig.trigger + trig.partial).toLowerCase();
+    const items = Array.from(pool.values())
+      .filter(t => t.display.toLowerCase().startsWith(q))
+      .sort((a, b) => b.count - a.count || a.display.localeCompare(b.display))
+      .slice(0, 8);
+
+    if (items.length === 0) { closeTagSuggest(); return; }
+    tagSuggest = { el, node, isNote, trigger: trig.trigger, start: trig.start, items, index: 0 };
+    renderTagSuggestPopover();
+  }
+
+  function renderTagSuggestPopover() {
+    let pop = document.getElementById('tag-suggest-popover');
+    if (!pop) { pop = document.createElement('div'); pop.id = 'tag-suggest-popover'; document.body.appendChild(pop); }
+    pop.innerHTML = '';
+    tagSuggest.items.forEach((item, i) => {
+      const row = document.createElement('div');
+      row.className = 'tag-suggest-item' + (i === tagSuggest.index ? ' active' : '');
+      const chipClass = tagSuggest.trigger === '#' ? 'tag-hash' : 'tag-at';
+      row.innerHTML = '<span class="' + chipClass + '">' + escapeHtml(item.display) + '</span>' +
+        (item.count > 1 ? '<span class="tag-suggest-count">' + item.count + '\u00D7</span>' : '');
+      row.onmousedown = (e) => { e.preventDefault(); applyTagSuggest(i); }; // mousedown so the field never blurs
+      pop.appendChild(row);
+    });
+    const rect = getCaretClientRect(tagSuggest.el);
+    pop.style.left = Math.max(8, rect.left) + 'px';
+    let top = rect.bottom + 4;
+    if (top + 220 > window.innerHeight) top = Math.max(8, rect.top - 220 - 4);
+    pop.style.top = top + 'px';
+  }
+
+  function applyTagSuggest(i) {
+    if (!tagSuggest) return;
+    const { el, node, isNote, start, items } = tagSuggest;
+    const item = items[i];
+    const text = el.textContent;
+    const caretOffset = getCaretOffset(el);
+    const newText = text.slice(0, start) + item.display + ' ' + text.slice(caretOffset);
+    const newCaret = start + item.display.length + 1;
+    if (isNote) node.note = newText; else node.text = newText;
+    el.innerHTML = renderInlineContent(newText);
+    closeTagSuggest();
+    el.focus();
+    setCaretByOffset(el, newCaret);
+    scheduleSave();
+  }
+
+  // Returns true if it handled the key (caller should stop here).
+  function handleTagSuggestKeydown(e, el) {
+    if (!tagSuggest || tagSuggest.el !== el) return false;
+    if (e.key === 'ArrowDown') { e.preventDefault(); tagSuggest.index = (tagSuggest.index + 1) % tagSuggest.items.length; renderTagSuggestPopover(); return true; }
+    if (e.key === 'ArrowUp') { e.preventDefault(); tagSuggest.index = (tagSuggest.index - 1 + tagSuggest.items.length) % tagSuggest.items.length; renderTagSuggestPopover(); return true; }
+    if (e.key === 'Enter' || e.key === 'Tab') { e.preventDefault(); applyTagSuggest(tagSuggest.index); return true; }
+    if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); closeTagSuggest(); return true; }
+    return false;
+  }
+
   function onContentInput(el, node, row) {
     let caretOffset = getCaretOffset(el);
     let text = el.textContent;
@@ -1385,6 +1528,7 @@
       node.text = text;
       el.innerHTML = renderInlineContent(text);
       setCaretByOffset(el, caretOffset);
+      closeTagSuggest();
       openDatePopover(node, row);
       scheduleSave();
       return;
@@ -1394,6 +1538,7 @@
     el.innerHTML = renderInlineContent(text);
     setCaretByOffset(el, caretOffset);
     scheduleSave();
+    updateTagSuggest(el, node, false);
   }
 
   function onNoteInput(el, node) {
@@ -1406,6 +1551,7 @@
       node.note = text;
       el.innerHTML = renderInlineContent(text);
       setCaretByOffset(el, caretOffset);
+      closeTagSuggest();
       openDatePopover(node, el);
       scheduleSave();
       return;
@@ -1415,9 +1561,11 @@
     el.innerHTML = renderInlineContent(text);
     setCaretByOffset(el, caretOffset);
     scheduleSave();
+    updateTagSuggest(el, node, true);
   }
 
   function onNoteKeyDown(e, id, el) {
+    if (handleTagSuggestKeydown(e, el)) return;
     const node = findNode(tree, id);
 
     if (e.key === 'Escape' || (e.key === 'Enter' && !e.shiftKey)) {
@@ -1494,6 +1642,33 @@
   function onKeyDown(e, id) {
     const node = findNode(tree, id);
     const el = e.target;
+    if (handleTagSuggestKeydown(e, el)) return;
+
+    // Alt+Right: zoom into this item (same as clicking its bullet).
+    // Alt+Left: zoom out one level (same as clicking the parent breadcrumb).
+    if (e.key === 'ArrowRight' && e.altKey) {
+      e.preventDefault();
+      zoomStack.push(id);
+      render();
+      requestAnimationFrame(() => { const zi = document.getElementById('zoom-title-input'); if (zi) zi.focus(); });
+      return;
+    }
+    if (e.key === 'ArrowLeft' && e.altKey) {
+      e.preventDefault();
+      if (zoomStack.length > 1) {
+        const poppedId = zoomStack.pop();
+        render();
+        focusNode(poppedId, false);
+      }
+      return;
+    }
+
+    // Ctrl+.: toggle collapse/expand of this item's children (same as the caret).
+    if (e.key === '.' && e.ctrlKey) {
+      e.preventDefault();
+      if (node.children.length > 0) toggleCollapse(id);
+      return;
+    }
 
     // Ctrl+Shift+Arrow: reorder this item among its siblings.
     if ((e.key === 'ArrowUp' || e.key === 'ArrowDown') && e.ctrlKey && e.shiftKey) {
@@ -1525,12 +1700,19 @@
       return;
     }
 
-    /* Ctrl+Enter or Cmd+Enter: Strikethrough Item & Regenerate if Recurring */
+    /* Ctrl+Enter or Cmd+Enter: Strikethrough Item & Regenerate if Recurring.
+       render() tears down and rebuilds the whole list, which was silently
+       dropping focus every time. Restore it: prefer the freshly-created
+       recurring instance, else the next item below, else the one above. */
     if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
       e.preventDefault();
+      const flatBefore = buildFlatVisibleIds();
+      const posBefore = flatBefore.indexOf(id);
+
       node.completed = !node.completed;
 
       // Recurring Task Logic: If checking off a recurring task, generate next instance!
+      let newInstanceId = null;
       if (node.completed && node.recurring) {
         const nextDate = calcNextDate(node);
         const sib = siblingsAndIndex(id);
@@ -1547,10 +1729,18 @@
           children: JSON.parse(JSON.stringify(node.children))
         };
         sib.parent.children.splice(sib.idx + 1, 0, nextNode);
+        newInstanceId = nextNode.id;
       }
 
       render();
       scheduleSave();
+
+      let nextFocusId = newInstanceId;
+      if (!nextFocusId && posBefore !== -1) {
+        if (posBefore + 1 < flatBefore.length) nextFocusId = flatBefore[posBefore + 1];
+        else if (posBefore - 1 >= 0) nextFocusId = flatBefore[posBefore - 1];
+      }
+      if (nextFocusId) focusNode(nextFocusId, false);
       return;
     }
 
@@ -1621,9 +1811,12 @@
 
     const filterActive = isFilterActive();
     document.querySelectorAll('.filter-btn[data-filter]').forEach(b => {
-      b.classList.toggle('active', b.dataset.filter === filterMode && !searchQuery.trim());
+      b.classList.toggle('active', b.dataset.filter === filterMode);
     });
-    document.getElementById('btn-calendar').classList.toggle('active', filterMode === 'today' && !searchQuery.trim());
+    const filterLabels = { today: 'Today', overdue: 'Due' };
+    document.getElementById('filter-active-badge').classList.toggle('show', filterMode !== 'all');
+    document.getElementById('filter-active-label').textContent = filterLabels[filterMode] || '';
+    document.getElementById('btn-search-toggle').classList.toggle('has-active', !!searchQuery.trim());
 
     let visibleSet = null, forceOpenSet = null;
     if (filterActive) {
@@ -1677,6 +1870,8 @@
     filterMode = 'all';
     searchQuery = '';
     document.getElementById('search-input').value = '';
+    document.getElementById('search-box').classList.remove('expanded');
+    document.getElementById('filters').classList.remove('expanded');
     const viewRoot = currentViewRoot();
     const n = { id: newId(), text: '', note: '', date: null, recurring: null, completed: false, children: [] };
     viewRoot.children.push(n);
@@ -1685,23 +1880,53 @@
     scheduleSave();
   }
 
-  /* Filter & Search Controls */
+  /* Filter & Search Controls — both collapse to just an icon. The date
+     filter also shows a persistent label+× badge outside the collapse
+     once active, so clearing it never requires reopening the picker. */
+  const filtersEl = document.getElementById('filters');
+  const searchBoxEl = document.getElementById('search-box');
+  const searchInputEl = document.getElementById('search-input');
+
   document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
     btn.onclick = () => {
-      filterMode = btn.dataset.filter;
+      filterMode = (filterMode === btn.dataset.filter) ? 'all' : btn.dataset.filter;
+      filtersEl.classList.remove('expanded');
       render();
     };
   });
 
-  document.getElementById('btn-calendar').onclick = () => {
-    filterMode = (filterMode === 'today') ? 'all' : 'today';
+  document.getElementById('btn-filter-clear').onclick = () => {
+    filterMode = 'all';
+    filtersEl.classList.remove('expanded');
     render();
   };
 
-  document.getElementById('search-input').oninput = (e) => {
+  document.getElementById('btn-filter-toggle').onclick = (e) => {
+    e.stopPropagation();
+    filtersEl.classList.toggle('expanded');
+  };
+
+  document.getElementById('btn-search-toggle').onclick = (e) => {
+    e.stopPropagation();
+    const willExpand = !searchBoxEl.classList.contains('expanded');
+    searchBoxEl.classList.toggle('expanded', willExpand);
+    if (willExpand) searchInputEl.focus();
+  };
+
+  searchInputEl.oninput = (e) => {
     searchQuery = e.target.value;
+    document.getElementById('btn-search-toggle').classList.toggle('has-active', !!searchQuery.trim());
     render();
   };
+
+  searchInputEl.addEventListener('blur', () => {
+    if (!searchInputEl.value.trim()) searchBoxEl.classList.remove('expanded');
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('#filters')) filtersEl.classList.remove('expanded');
+    if (!e.target.closest('#search-box') && !searchInputEl.value.trim()) searchBoxEl.classList.remove('expanded');
+  });
 
   /* Menu Toggle & Actions */
   const btnMenu = document.getElementById('btn-menu');

@@ -271,23 +271,15 @@
   #global-popover input[type="date"] { width: 100%; font-size: 12.5px; padding: 6px; border-radius: 6px; border: 0.5px solid var(--dyn-border); background: var(--dyn-bg); color: var(--dyn-text); outline: none; }
   #global-popover-list button { text-align: left; padding: 6px 8px; }
 
-  /* Rich date picker: NL input, quick chips, calendar, time/repeat rows */
-  .dp-nl-wrap { position: relative; margin-bottom: 10px; }
-  .dp-nl-wrap .dp-nl-icon { position: absolute; left: 9px; top: 8px; width: 14px; height: 14px; color: var(--dyn-accent); }
-  .dp-nl-wrap .dp-nl-icon svg { width: 14px; height: 14px; display: block; }
-  .dp-nl-input { width: 100%; background: var(--dyn-bg); border: 0.5px solid var(--dyn-border); border-radius: 10px; padding: 8px 10px 8px 30px; font-size: 12.5px; color: var(--dyn-text); outline: none; font-family: inherit; }
-  .dp-nl-input:focus { border-color: var(--dyn-accent); }
-  .dp-nl-input::placeholder { color: var(--dyn-text-muted); }
-
-  .dp-quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 4px; }
-  .dp-quick-btn { display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 10px; background: var(--dyn-bg); border: 0.5px solid var(--dyn-border); cursor: pointer; text-align: left; font-family: inherit; transition: background-color 120ms ease, border-color 120ms ease; }
+  /* Date picker: quick-select shortcuts, calendar, and a second screen
+     for picking a repeat cadence (shown only after a shortcut is picked) */
+  .dp-quick-grid { display: grid; grid-template-columns: 1fr; gap: 6px; margin-bottom: 4px; }
+  #global-popover .dp-quick-btn { display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 10px; background: var(--dyn-bg); border: 0.5px solid var(--dyn-border); cursor: pointer; text-align: left; font-family: inherit; transition: background-color 120ms ease, border-color 120ms ease; }
   .dp-quick-btn:hover { background: var(--dyn-hover); border-color: var(--dyn-accent); }
-  .dp-quick-btn.selected { border-color: var(--dyn-accent); background: var(--dyn-accent-dim); }
   .dp-quick-icon { width: 26px; height: 26px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .dp-quick-icon svg { width: 14px; height: 14px; }
   .dp-quick-icon.c-green { background: rgba(129,199,132,0.18); color: var(--dyn-green); }
   .dp-quick-icon.c-amber { background: rgba(229,179,103,0.18); color: var(--dyn-amber); }
-  .dp-quick-icon.c-blue  { background: var(--dyn-accent-dim); color: var(--dyn-accent); }
   .dp-quick-icon.c-link  { background: var(--dyn-link-bg); color: var(--dyn-link); }
   .dp-quick-label { font-size: 12px; font-weight: 600; color: var(--dyn-text); line-height: 1.2; }
   .dp-quick-sub { font-size: 10.5px; color: var(--dyn-text-muted); margin-top: 1px; }
@@ -307,24 +299,18 @@
   .dp-cal-grid .dp-day-today { border: 1px solid var(--dyn-accent); color: var(--dyn-accent); }
   .dp-cal-grid .dp-day-selected { background: var(--dyn-accent); color: var(--page-bg); font-weight: 700; }
 
-  .dp-row { display: flex; align-items: center; justify-content: space-between; background: var(--dyn-bg); padding: 8px; border-radius: 10px; margin-bottom: 6px; }
-  .dp-row-label { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 500; color: var(--dyn-text-secondary); }
-  .dp-row-label svg { width: 14px; height: 14px; color: var(--dyn-text-muted); }
-  .dp-row select, .dp-row input[type="time"] { background: var(--dyn-bg-raised); border: 0.5px solid var(--dyn-border); color: var(--dyn-text); font-size: 11.5px; border-radius: 8px; padding: 4px 6px; outline: none; font-family: inherit; }
+  #global-popover .dp-back-link { background: none; border: none; color: var(--dyn-text-secondary); font-size: 12px; font-weight: 600; cursor: pointer; padding: 4px 2px; margin-bottom: 8px; display: flex; align-items: center; gap: 4px; font-family: inherit; }
+  .dp-back-link svg { width: 12px; height: 12px; }
+  .dp-back-link:hover { color: var(--dyn-text); }
+  .dp-confirm-label { font-size: 13px; font-weight: 600; color: var(--dyn-text); margin-bottom: 10px; }
+  .dp-repeat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  #global-popover .dp-repeat-btn { padding: 10px 8px; border-radius: 10px; background: var(--dyn-bg); border: 0.5px solid var(--dyn-border); color: var(--dyn-text); font-size: 12.5px; font-weight: 600; cursor: pointer; text-align: center; font-family: inherit; transition: background-color 120ms ease, border-color 120ms ease; }
+  .dp-repeat-btn:hover { background: var(--dyn-hover); border-color: var(--dyn-accent); }
+  #global-popover .dp-repeat-btn.none { grid-column: span 2; color: var(--dyn-text-secondary); }
 
-  .dp-custom-box { padding: 8px 10px; background: var(--dyn-accent-dim); border-radius: 10px; border: 0.5px solid var(--dyn-border); margin-bottom: 6px; display: none; align-items: center; justify-content: space-between; font-size: 12px; color: var(--dyn-text); }
-  .dp-custom-box input[type="number"] { width: 44px; text-align: center; background: var(--dyn-bg-raised); border: 0.5px solid var(--dyn-border); border-radius: 6px; padding: 3px; color: var(--dyn-text); font-family: inherit; }
-  .dp-custom-box select { background: var(--dyn-bg-raised); border: 0.5px solid var(--dyn-border); border-radius: 6px; padding: 3px 6px; color: var(--dyn-text); font-size: 11.5px; font-family: inherit; }
-
-  .dp-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; padding-top: 8px; border-top: 1px solid var(--dyn-border); }
-  .dp-clear-btn { background: none; border: none; color: var(--dyn-red); font-size: 12px; font-weight: 600; cursor: pointer; padding: 4px 2px; font-family: inherit; }
+  .dp-footer { display: flex; align-items: center; margin-top: 6px; padding-top: 8px; border-top: 1px solid var(--dyn-border); }
+  #global-popover .dp-clear-btn { background: none; border: none; color: var(--dyn-red); font-size: 12px; font-weight: 600; cursor: pointer; padding: 4px 2px; font-family: inherit; }
   .dp-clear-btn:hover { text-decoration: underline; }
-  .dp-footer-actions { display: flex; gap: 6px; }
-  .dp-btn-secondary { padding: 6px 12px; border-radius: 8px; border: 0.5px solid var(--dyn-border); background: transparent; color: var(--dyn-text-secondary); font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; }
-  .dp-btn-secondary:hover { background: var(--dyn-hover); color: var(--dyn-text); }
-  .dp-btn-primary { padding: 6px 14px; border-radius: 8px; border: none; background: var(--dyn-accent); color: var(--page-bg); font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit; }
-  .dp-btn-primary:hover { filter: brightness(1.08); }
-  .repeat-select { font-size: 12px; padding: 5px 8px; border-radius: 6px; border: 0.5px solid var(--dyn-border); background: var(--dyn-bg); color: var(--dyn-text); outline: none; width: 100%; }
 
   .children-wrap { display: grid; grid-template-rows: 1fr; opacity: 1; transition: grid-template-rows 200ms ease, opacity 200ms ease; }
   .children-wrap.collapsed { grid-template-rows: 0fr; opacity: 0; }
@@ -586,27 +572,14 @@
     if (dateStr === todayStr()) return 'today';
     return dt.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
   }
-  // '17:00' -> '5:00 PM'
-  function formatTime(timeStr) {
-    if (!timeStr) return '';
-    const [h, m] = timeStr.split(':').map(Number);
-    const ap = h >= 12 ? 'PM' : 'AM';
-    const h12 = h % 12 === 0 ? 12 : h % 12;
-    return h12 + ':' + String(m).padStart(2, '0') + ' ' + ap;
-  }
   function shortDow(dateStr) {
     const [y,m,d] = dateStr.split('-').map(Number);
     return new Date(y, m-1, d).toLocaleDateString(undefined, { weekday: 'short' });
   }
-  function nextWeekday(from, targetDow) {
-    const dt = new Date(from);
-    const diff = (targetDow - dt.getDay() + 7) % 7 || 7;
-    dt.setDate(dt.getDate() + diff);
-    return isoOf(dt);
-  }
 
   /* Date Recurring Math — supports the built-in cadences plus a custom
-     interval/unit pair (e.g. "every 2 weeks") stored on the node. */
+     interval/unit pair (e.g. "every 2 weeks") stored on the node. Custom
+     has no UI to create it anymore, but existing saved data still works. */
   function calcNextDate(node) {
     const dateStr = node.date || todayStr();
     const [y, m, d] = dateStr.split('-').map(Number);
@@ -615,6 +588,7 @@
     if (type === 'daily') dt.setDate(dt.getDate() + 1);
     else if (type === 'weekly') dt.setDate(dt.getDate() + 7);
     else if (type === 'monthly') dt.setMonth(dt.getMonth() + 1);
+    else if (type === 'quarterly') dt.setMonth(dt.getMonth() + 3);
     else if (type === 'yearly') dt.setFullYear(dt.getFullYear() + 1);
     else if (type === 'custom') {
       const n = node.recurInterval || 1;
@@ -624,66 +598,6 @@
       else if (unit === 'months') dt.setMonth(dt.getMonth() + n);
     }
     return isoOf(dt);
-  }
-
-  // Lightweight pattern matching, not real NLP. Recognizes: today,
-  // tomorrow, "next <weekday|week>", "every <day|week|month|year|weekday>",
-  // "in N day(s)/week(s)/month(s)", and a trailing "at H(:MM) am/pm".
-  function parseNaturalLanguage(text) {
-    const q = text.trim().toLowerCase();
-    if (!q) return null;
-    const now = new Date();
-    const dayNames = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
-    const result = { date: null, time: null, recurring: null };
-
-    const everyMatch = q.match(/every\s+(day|week|month|year|monday|tuesday|wednesday|thursday|friday|saturday|sunday)/);
-    if (everyMatch) {
-      const w = everyMatch[1];
-      if (dayNames.includes(w)) { result.recurring = 'weekly'; result.date = nextWeekday(now, dayNames.indexOf(w)); }
-      else if (w === 'day') { result.recurring = 'daily'; result.date = isoOf(now); }
-      else if (w === 'week') { result.recurring = 'weekly'; result.date = isoOf(now); }
-      else if (w === 'month') { result.recurring = 'monthly'; result.date = isoOf(now); }
-      else if (w === 'year') { result.recurring = 'yearly'; result.date = isoOf(now); }
-    }
-
-    const inMatch = q.match(/\bin\s+(\d+)\s*(day|days|week|weeks|month|months)\b/);
-    if (inMatch) {
-      const n = parseInt(inMatch[1], 10);
-      const unit = inMatch[2];
-      const dt = new Date(now);
-      if (unit.startsWith('day')) dt.setDate(dt.getDate() + n);
-      else if (unit.startsWith('week')) dt.setDate(dt.getDate() + n * 7);
-      else if (unit.startsWith('month')) dt.setMonth(dt.getMonth() + n);
-      result.date = isoOf(dt);
-    }
-
-    if (!result.date) {
-      const nextMatch = q.match(/next\s+(monday|tuesday|wednesday|thursday|friday|saturday|sunday|week)/);
-      if (nextMatch) {
-        const w = nextMatch[1];
-        if (w === 'week') { const dt = new Date(now); dt.setDate(dt.getDate() + 7); result.date = isoOf(dt); }
-        else result.date = nextWeekday(now, dayNames.indexOf(w));
-      }
-    }
-
-    if (!result.date) {
-      if (/\btoday\b/.test(q)) result.date = isoOf(now);
-      else if (/\btomorrow\b/.test(q)) { const dt = new Date(now); dt.setDate(dt.getDate() + 1); result.date = isoOf(dt); }
-    }
-
-    const timeMatch = q.match(/\bat\s+(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\b/) || q.match(/\b(\d{1,2})(?::(\d{2}))?\s*(am|pm)\b/);
-    if (timeMatch) {
-      let hh = parseInt(timeMatch[1], 10);
-      const mm = timeMatch[2] ? parseInt(timeMatch[2], 10) : 0;
-      const ap = timeMatch[3];
-      if (ap === 'pm' && hh < 12) hh += 12;
-      if (ap === 'am' && hh === 12) hh = 0;
-      result.time = String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0');
-    }
-
-    if (!result.date && !result.time && !result.recurring) return null;
-    if (!result.date) result.date = isoOf(now);
-    return result;
   }
 
   function scheduleSave() {
@@ -751,9 +665,15 @@
     }
   }
 
-  function closePopover() { 
-    const p = document.getElementById('global-popover'); 
-    if (p) p.remove(); 
+  // Popovers can register a cleanup that fires on ANY close (Escape,
+  // outside click, or opening a different popover) — used by the date
+  // picker so backing out of the repeat screen without an explicit choice
+  // still applies the date you picked instead of silently discarding it.
+  let popoverCleanup = null;
+  function closePopover() {
+    const p = document.getElementById('global-popover');
+    if (p) p.remove();
+    if (popoverCleanup) { const fn = popoverCleanup; popoverCleanup = null; fn(); }
   }
 
   // Shared fixed-position popover shell used by both the date picker and
@@ -775,39 +695,39 @@
 
   /* Fixed Viewport Date Picker Popover (No Cutoff!) */
   const DP_ICONS = {
-    sparkles: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg>',
     sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>',
     sunrise: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6M4.93 10.93l1.41 1.41M2 18h2M20 18h2M17.66 12.34l1.41-1.41M8 18a4 4 0 0 1 8 0"/><line x1="1" y1="22" x2="23" y2="22"/></svg>',
-    coffee: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>',
     calDays: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>',
     chevronLeft: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>',
     chevronRight: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>',
-    clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg>',
-    repeat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>'
+    back: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>'
   };
 
+  const RECUR_OPTIONS = [
+    { value: 'daily', label: 'Daily' },
+    { value: 'weekly', label: 'Weekly' },
+    { value: 'monthly', label: 'Monthly' },
+    { value: 'quarterly', label: 'Quarterly' },
+    { value: 'yearly', label: 'Annually' }
+  ];
+
+  // No draft, no Apply — every date pick (a shortcut or a calendar day)
+  // leads to the repeat-cadence screen; picking a cadence (or "Doesn't
+  // repeat") commits both the date and recurrence together and closes.
   function openDatePopover(node, triggerEl) {
-    const pop = createPopover(triggerEl, 560);
-    pop.style.width = '320px';
+    const pop = createPopover(triggerEl, 480);
+    pop.style.width = '300px';
     pop.style.maxHeight = '80vh';
     pop.style.overflowY = 'auto';
 
-    // Draft state — nothing touches the node until Apply is pressed.
-    const draft = {
-      date: node.date || null,
-      time: node.time || null,
-      recurring: node.recurring || 'never',
-      recurInterval: node.recurInterval || 2,
-      recurUnit: node.recurUnit || 'weeks'
-    };
-    let calView = draft.date ? (() => { const [y,m,d] = draft.date.split('-').map(Number); return new Date(y, m-1, 1); })() : new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+    let calView = node.date ? (() => { const [y,m,d] = node.date.split('-').map(Number); return new Date(y, m-1, 1); })() : new Date(new Date().getFullYear(), new Date().getMonth(), 1);
 
-    function commitDraft() {
-      node.date = draft.date;
-      node.time = draft.time;
-      node.recurring = draft.recurring === 'never' ? null : draft.recurring;
-      node.recurInterval = draft.recurring === 'custom' ? draft.recurInterval : null;
-      node.recurUnit = draft.recurring === 'custom' ? draft.recurUnit : null;
+    function commitAndClose(dateVal, recurringVal) {
+      popoverCleanup = null;
+      node.date = dateVal;
+      node.recurring = recurringVal;
+      node.recurInterval = null;
+      node.recurUnit = null;
       closePopover(); render(); scheduleSave();
     }
 
@@ -816,44 +736,15 @@
     hdr.textContent = 'Set Due Date';
     pop.appendChild(hdr);
 
-    // Natural language input
-    const nlWrap = document.createElement('div');
-    nlWrap.className = 'dp-nl-wrap';
-    nlWrap.innerHTML = '<span class="dp-nl-icon">' + DP_ICONS.sparkles + '</span>';
-    const nlInput = document.createElement('input');
-    nlInput.className = 'dp-nl-input';
-    nlInput.type = 'text';
-    nlInput.placeholder = "e.g. \u2018next monday\u2019 or \u2018in 3 days\u2019";
-    nlInput.onkeydown = (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        e.stopPropagation();
-        const parsed = parseNaturalLanguage(nlInput.value);
-        if (parsed) {
-          if (parsed.date) draft.date = parsed.date;
-          if (parsed.time) draft.time = parsed.time;
-          if (parsed.recurring) draft.recurring = parsed.recurring;
-          if (draft.date) { const [y,m,d] = draft.date.split('-').map(Number); calView = new Date(y, m-1, 1); }
-          nlInput.value = '';
-          refresh();
-        }
-      }
-    };
-    nlWrap.appendChild(nlInput);
-    pop.appendChild(nlWrap);
+    // ---------- Screen 1: shortcuts + calendar ----------
+    const mainScreen = document.createElement('div');
 
-    // Quick-select chips
     const quickGrid = document.createElement('div');
     quickGrid.className = 'dp-quick-grid';
     const quickOptions = [
-      { label: 'Today', time: '17:00', color: 'c-green', icon: DP_ICONS.sun,
-        dateFn: () => todayStr(), subFn: (d) => formatDate(d) + ', 5:00 PM' },
-      { label: 'Tomorrow', time: '09:00', color: 'c-amber', icon: DP_ICONS.sunrise,
-        dateFn: () => { const d = new Date(); d.setDate(d.getDate() + 1); return isoOf(d); }, subFn: (d) => formatDate(d) + ', 9:00 AM' },
-      { label: 'This Weekend', time: '10:00', color: 'c-blue', icon: DP_ICONS.coffee,
-        dateFn: () => { const d = new Date(); const diff = (6 - d.getDay() + 7) % 7 || 7; d.setDate(d.getDate() + diff); return isoOf(d); }, subFn: (d) => shortDow(d) + ', 10:00 AM' },
-      { label: 'Next Week', time: '09:00', color: 'c-link', icon: DP_ICONS.calDays,
-        dateFn: () => { const d = new Date(); const diff = (1 - d.getDay() + 7) % 7 || 7; d.setDate(d.getDate() + diff); return isoOf(d); }, subFn: (d) => shortDow(d) + ', 9:00 AM' }
+      { label: 'Today', color: 'c-green', icon: DP_ICONS.sun, dateFn: () => todayStr() },
+      { label: 'Tomorrow', color: 'c-amber', icon: DP_ICONS.sunrise, dateFn: () => { const d = new Date(); d.setDate(d.getDate() + 1); return isoOf(d); } },
+      { label: 'Next Week', color: 'c-link', icon: DP_ICONS.calDays, dateFn: () => { const d = new Date(); const diff = (1 - d.getDay() + 7) % 7 || 7; d.setDate(d.getDate() + diff); return isoOf(d); } }
     ];
     quickOptions.forEach(opt => {
       const d = opt.dateFn();
@@ -862,21 +753,16 @@
       btn.type = 'button';
       btn.innerHTML = '<span class="dp-quick-icon ' + opt.color + '">' + opt.icon + '</span>' +
         '<span><span class="dp-quick-label" style="display:block;">' + opt.label + '</span>' +
-        '<span class="dp-quick-sub">' + opt.subFn(d) + '</span></span>';
-      btn.onclick = (e) => {
-        e.stopPropagation();
-        draft.date = d; draft.time = opt.time;
-        commitDraft();
-      };
+        '<span class="dp-quick-sub">' + formatDate(d) + '</span></span>';
+      btn.onclick = (e) => { e.stopPropagation(); showRepeatScreen(d); };
       quickGrid.appendChild(btn);
     });
-    pop.appendChild(quickGrid);
+    mainScreen.appendChild(quickGrid);
 
     const hr1 = document.createElement('hr');
     hr1.style.cssText = 'border:none;border-top:1px solid var(--dyn-border);margin:8px 0;';
-    pop.appendChild(hr1);
+    mainScreen.appendChild(hr1);
 
-    // Calendar
     const calHeader = document.createElement('div');
     calHeader.className = 'dp-cal-header';
     const calLabel = document.createElement('span');
@@ -886,82 +772,58 @@
     const prevBtn = document.createElement('button');
     prevBtn.type = 'button';
     prevBtn.innerHTML = DP_ICONS.chevronLeft;
-    prevBtn.onclick = (e) => { e.stopPropagation(); calView.setMonth(calView.getMonth() - 1); refresh(); };
+    prevBtn.onclick = (e) => { e.stopPropagation(); calView.setMonth(calView.getMonth() - 1); refreshCalendar(); };
     const nextBtn = document.createElement('button');
     nextBtn.type = 'button';
     nextBtn.innerHTML = DP_ICONS.chevronRight;
-    nextBtn.onclick = (e) => { e.stopPropagation(); calView.setMonth(calView.getMonth() + 1); refresh(); };
+    nextBtn.onclick = (e) => { e.stopPropagation(); calView.setMonth(calView.getMonth() + 1); refreshCalendar(); };
     calNav.appendChild(prevBtn); calNav.appendChild(nextBtn);
     calHeader.appendChild(calLabel); calHeader.appendChild(calNav);
-    pop.appendChild(calHeader);
+    mainScreen.appendChild(calHeader);
 
     const dowRow = document.createElement('div');
     dowRow.className = 'dp-dow-row';
     ['Mo','Tu','We','Th','Fr','Sa','Su'].forEach(d => { const s = document.createElement('span'); s.textContent = d; dowRow.appendChild(s); });
-    pop.appendChild(dowRow);
+    mainScreen.appendChild(dowRow);
 
     const calGrid = document.createElement('div');
     calGrid.className = 'dp-cal-grid';
-    pop.appendChild(calGrid);
+    mainScreen.appendChild(calGrid);
 
-    const hr2 = document.createElement('hr');
-    hr2.style.cssText = 'border:none;border-top:1px solid var(--dyn-border);margin:8px 0;';
-    pop.appendChild(hr2);
+    pop.appendChild(mainScreen);
 
-    // Time row
-    const timeRow = document.createElement('div');
-    timeRow.className = 'dp-row';
-    timeRow.innerHTML = '<span class="dp-row-label">' + DP_ICONS.clock + '<span>Time</span></span>';
-    const timeSelect = document.createElement('select');
-    const timePresets = ['09:00', '13:00', '17:00', '21:00'];
-    const timeLabels = { '09:00': '9:00 AM (Morning)', '13:00': '1:00 PM (Afternoon)', '17:00': '5:00 PM (Evening)', '21:00': '9:00 PM (Night)' };
-    timeSelect.innerHTML = '<option value="">No time</option>' + timePresets.map(t => `<option value="${t}">${timeLabels[t]}</option>`).join('') + '<option value="custom">Custom time...</option>';
-    const customTimeInput = document.createElement('input');
-    customTimeInput.type = 'time';
-    customTimeInput.style.display = 'none';
-    timeSelect.onchange = (e) => {
-      if (e.target.value === 'custom') { customTimeInput.style.display = ''; customTimeInput.value = draft.time || ''; customTimeInput.focus(); }
-      else { customTimeInput.style.display = 'none'; draft.time = e.target.value || null; }
-    };
-    customTimeInput.onchange = (e) => { draft.time = e.target.value || null; };
-    const timeCtrlWrap = document.createElement('div');
-    timeCtrlWrap.style.cssText = 'display:flex;gap:4px;';
-    timeCtrlWrap.appendChild(timeSelect); timeCtrlWrap.appendChild(customTimeInput);
-    timeRow.appendChild(timeCtrlWrap);
-    pop.appendChild(timeRow);
+    // ---------- Screen 2: repeat cadence (shown only after a shortcut) ----------
+    const repeatScreen = document.createElement('div');
+    repeatScreen.style.display = 'none';
 
-    // Repeat row
-    const repeatRow = document.createElement('div');
-    repeatRow.className = 'dp-row';
-    repeatRow.innerHTML = '<span class="dp-row-label">' + DP_ICONS.repeat + '<span>Repeat</span></span>';
-    const repeatSelect = document.createElement('select');
-    repeatSelect.innerHTML = `
-      <option value="never">Does not repeat</option>
-      <option value="daily">Every day</option>
-      <option value="weekly">Every week</option>
-      <option value="monthly">Every month</option>
-      <option value="yearly">Every year</option>
-      <option value="custom">Custom...</option>
-    `;
-    repeatSelect.onchange = (e) => { draft.recurring = e.target.value; refresh(); };
-    repeatRow.appendChild(repeatSelect);
-    pop.appendChild(repeatRow);
+    const backBtn = document.createElement('button');
+    backBtn.className = 'dp-back-link';
+    backBtn.type = 'button';
+    backBtn.innerHTML = DP_ICONS.back + '<span>Back</span>';
+    backBtn.onclick = (e) => { e.stopPropagation(); showMainScreen(); };
+    repeatScreen.appendChild(backBtn);
 
-    // Custom recurrence box
-    const customBox = document.createElement('div');
-    customBox.className = 'dp-custom-box';
-    customBox.innerHTML = '<span>Repeat every</span>';
-    const intervalWrap = document.createElement('div');
-    intervalWrap.style.cssText = 'display:flex;gap:4px;align-items:center;';
-    const intervalInput = document.createElement('input');
-    intervalInput.type = 'number'; intervalInput.min = '1';
-    intervalInput.onchange = (e) => { draft.recurInterval = Math.max(1, parseInt(e.target.value, 10) || 1); };
-    const unitSelect = document.createElement('select');
-    unitSelect.innerHTML = '<option value="days">Days</option><option value="weeks">Weeks</option><option value="months">Months</option>';
-    unitSelect.onchange = (e) => { draft.recurUnit = e.target.value; };
-    intervalWrap.appendChild(intervalInput); intervalWrap.appendChild(unitSelect);
-    customBox.appendChild(intervalWrap);
-    pop.appendChild(customBox);
+    const confirmLabel = document.createElement('div');
+    confirmLabel.className = 'dp-confirm-label';
+    repeatScreen.appendChild(confirmLabel);
+
+    const repeatGrid = document.createElement('div');
+    repeatGrid.className = 'dp-repeat-grid';
+    const noneBtn = document.createElement('button');
+    noneBtn.className = 'dp-repeat-btn none';
+    noneBtn.type = 'button';
+    noneBtn.textContent = "Doesn't repeat";
+    repeatGrid.appendChild(noneBtn);
+    RECUR_OPTIONS.forEach(opt => {
+      const b = document.createElement('button');
+      b.className = 'dp-repeat-btn';
+      b.type = 'button';
+      b.textContent = opt.label;
+      repeatGrid.appendChild(b);
+    });
+    repeatScreen.appendChild(repeatGrid);
+
+    pop.appendChild(repeatScreen);
 
     // Footer
     const footer = document.createElement('div');
@@ -972,22 +834,34 @@
     clearBtn.textContent = 'Clear date';
     clearBtn.onclick = (e) => {
       e.stopPropagation();
+      popoverCleanup = null;
       node.date = null; node.time = null; node.recurring = null; node.recurInterval = null; node.recurUnit = null;
       closePopover(); render(); scheduleSave();
     };
-    const actions = document.createElement('div');
-    actions.className = 'dp-footer-actions';
-    const cancelBtn = document.createElement('button');
-    cancelBtn.className = 'dp-btn-secondary'; cancelBtn.type = 'button'; cancelBtn.textContent = 'Cancel';
-    cancelBtn.onclick = (e) => { e.stopPropagation(); closePopover(); };
-    const applyBtn = document.createElement('button');
-    applyBtn.className = 'dp-btn-primary'; applyBtn.type = 'button'; applyBtn.textContent = 'Apply';
-    applyBtn.onclick = (e) => { e.stopPropagation(); commitDraft(); };
-    actions.appendChild(cancelBtn); actions.appendChild(applyBtn);
-    footer.appendChild(clearBtn); footer.appendChild(actions);
+    footer.appendChild(clearBtn);
     pop.appendChild(footer);
 
-    function refresh() {
+    function showRepeatScreen(dateVal) {
+      mainScreen.style.display = 'none';
+      repeatScreen.style.display = 'block';
+      confirmLabel.textContent = 'Repeat ' + formatDate(dateVal) + '?';
+      // Safety net: if the popover gets dismissed (Escape, outside click,
+      // switching to another item) before an explicit repeat choice, still
+      // apply the date rather than silently losing the pick. Existing
+      // recurrence is left as-is — only an explicit button click changes it.
+      popoverCleanup = () => { node.date = dateVal; render(); scheduleSave(); };
+      noneBtn.onclick = (e) => { e.stopPropagation(); commitAndClose(dateVal, null); };
+      repeatGrid.querySelectorAll('.dp-repeat-btn:not(.none)').forEach((b, i) => {
+        b.onclick = (e) => { e.stopPropagation(); commitAndClose(dateVal, RECUR_OPTIONS[i].value); };
+      });
+    }
+    function showMainScreen() {
+      popoverCleanup = null;
+      repeatScreen.style.display = 'none';
+      mainScreen.style.display = 'block';
+    }
+
+    function refreshCalendar() {
       const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
       calLabel.textContent = monthNames[calView.getMonth()] + ' ' + calView.getFullYear();
 
@@ -1008,22 +882,13 @@
         b.type = 'button';
         b.textContent = i;
         if (iso === todayStr()) b.classList.add('dp-day-today');
-        if (iso === draft.date) b.classList.add('dp-day-selected');
-        b.onclick = (e) => { e.stopPropagation(); draft.date = iso; refresh(); };
+        if (iso === node.date) b.classList.add('dp-day-selected');
+        b.onclick = (e) => { e.stopPropagation(); showRepeatScreen(iso); };
         calGrid.appendChild(b);
       }
-
-      timeSelect.value = draft.time && timePresets.includes(draft.time) ? draft.time : (draft.time ? 'custom' : '');
-      customTimeInput.style.display = timeSelect.value === 'custom' ? '' : 'none';
-      if (timeSelect.value === 'custom') customTimeInput.value = draft.time || '';
-
-      repeatSelect.value = draft.recurring;
-      customBox.style.display = draft.recurring === 'custom' ? 'flex' : 'none';
-      intervalInput.value = draft.recurInterval;
-      unitSelect.value = draft.recurUnit;
     }
 
-    refresh();
+    refreshCalendar();
   }
 
   let dragNodeId = null;
@@ -1349,10 +1214,11 @@
     if (node.date || node.recurring) {
       const badge = document.createElement('div');
       badge.className = 'date-badge ' + (node.date ? dateClass(node.date) : 'd-future');
-      const dateLabel = node.date ? formatDate(node.date) + (node.time ? ', ' + formatTime(node.time) : '') : 'No date';
+      const dateLabel = node.date ? formatDate(node.date) : 'No date';
+      const recurDisplay = { daily: 'daily', weekly: 'weekly', monthly: 'monthly', quarterly: 'quarterly', yearly: 'annually' };
       const recurLabel = node.recurring === 'custom'
         ? `every ${node.recurInterval || 1} ${node.recurUnit || 'weeks'}`
-        : node.recurring;
+        : (recurDisplay[node.recurring] || node.recurring);
       badge.innerHTML = dateLabel + (node.recurring ? ` <span class="tag-repeat">↻ ${recurLabel}</span>` : '');
       const openDp = () => openDatePopover(node, badge);
       badge.onclick = (e) => { e.stopPropagation(); openDp(); };
@@ -1721,7 +1587,6 @@
           text: node.text,
           note: node.note,
           date: nextDate,
-          time: node.time || null,
           recurring: node.recurring,
           recurInterval: node.recurInterval,
           recurUnit: node.recurUnit,
